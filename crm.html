@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جیبیکو | CRM فروش</title>
+<script>document.documentElement.classList.add('js');</script>
+<link href="https://fonts.cdnfonts.com/css/dana" rel="stylesheet">
+<style>
+:root{--navy:#0a1a2f;--navy2:#0e2440;--gold:#f2b632;--gold-soft:rgba(242,182,50,.12);--muted:#94a3b8;--line:#1e3a5f;--grad-gold:linear-gradient(135deg,#f7c948,#e0a416);--green:#4ade80}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Dana','Segoe UI',Tahoma,sans-serif;background:var(--navy);color:#e2e8f0;line-height:1.8;overflow-x:hidden}
+a{text-decoration:none}.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+.announce{background:var(--grad-gold);color:var(--navy);text-align:center;padding:10px 40px 10px 20px;font-size:14px;font-weight:700;position:relative;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.announce b{background:rgba(10,26,47,.15);padding:2px 10px;border-radius:50px;margin-left:8px}
+.an-btn{background:var(--navy);color:var(--gold);border:none;border-radius:50px;padding:6px 20px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:.3s;white-space:nowrap}
+.an-btn:hover{transform:scale(1.06)}
+.announce .close-a{position:absolute;left:12px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;cursor:pointer;color:var(--navy);width:28px;height:28px;border-radius:50%}
+.announce .close-a:hover{background:rgba(10,26,47,.1)}
+.announce-form{display:none;background:var(--navy2);padding:14px 20px;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.announce-form.open{display:flex}
+.announce-form input{padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:var(--navy);color:#e2e8f0;font-family:inherit;font-size:13px;width:190px}
+.announce-form input:focus{outline:none;border-color:var(--gold)}
+.announce-form button{background:var(--grad-gold);color:var(--navy);border:none;border-radius:10px;padding:10px 24px;font-family:inherit;font-weight:800;cursor:pointer;transition:.3s}
+.announce-form button:hover{transform:translateY(-2px)}
+.topbar{display:none;background:#071322;padding:10px 20px;justify-content:space-between;align-items:center}
+.topbar-left,.topbar-right{display:flex;gap:18px;align-items:center}
+.topbar button,.topbar a{background:none;border:none;color:#cfd8e3;cursor:pointer;padding:4px;text-decoration:none}.topbar svg{width:22px;height:22px}
+.search-row{display:none;background:#071322;padding:0 20px 12px;position:relative}.search-row.open{display:block}
+.search-row input{width:100%;padding:10px 15px;border-radius:10px;border:1px solid #1e3a5f;background:#0a1a2f;color:#fff;font-family:inherit}
+#prog{position:fixed;top:0;right:0;height:3px;background:var(--grad-gold);width:0;z-index:1100}
+header{background:var(--navy);position:sticky;top:0;z-index:1000;transition:.3s}header.scrolled{box-shadow:0 8px 30px rgba(0,0,0,.35)}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:14px 0;gap:15px}
+.logo-box{display:flex;flex-direction:column;line-height:1.4}.logo{font-size:26px;font-weight:900;color:var(--gold)}.logo-tag{font-size:11px;color:#8fa3ba}
+.menu{display:flex;list-style:none;gap:6px;align-items:center}.menu>li{position:relative}
+.menu>li>a{color:#dce6f2;text-decoration:none;padding:10px 14px;border-radius:10px;font-size:15px;display:block;transition:.25s;cursor:pointer}
+.menu>li>a:hover{background:var(--gold-soft);color:var(--gold)}
+.menu>li>a.active-home{color:var(--gold);background:var(--gold-soft);font-weight:800}
+.menu .ble a{color:var(--gold);border:1px solid rgba(242,182,50,.4);border-radius:50px;margin-right:6px;padding:9px 18px}
+.menu .ble a:hover{background:var(--gold);color:var(--navy)}
+.drop{display:none;position:absolute;top:100%;right:0;background:var(--navy2);border:1px solid #1e3a5f;border-radius:14px;min-width:210px;padding:10px;box-shadow:0 20px 40px rgba(0,0,0,.4);list-style:none;z-index:999}
+.menu li.has-drop:hover .drop{display:block}
+.drop a{display:block;color:#cfd8e3;text-decoration:none;padding:9px 14px;border-radius:9px;font-size:14px;transition:.2s}
+.drop a:hover{background:var(--gold-soft);color:var(--gold);padding-right:20px}
+.caret{font-size:10px;opacity:.7}
+.search-console{position:relative;flex:1;max-width:300px;margin:0 10px}
+.search-console .s-mag{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted);pointer-events:none}
+.search-console input{width:100%;padding:10px 40px 10px 14px;border-radius:50px;border:1px solid var(--line);background:var(--navy2);color:#e2e8f0;font-family:inherit;font-size:13px}
+.search-console input:focus{outline:none;border-color:var(--gold)}
+.search-results{position:absolute;top:115%;right:0;left:0;background:var(--navy2);border:1px solid var(--line);border-radius:14px;max-height:320px;overflow-y:auto;display:none;z-index:1200;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.search-results.open{display:block}
+.sr-item{display:flex;gap:10px;align-items:center;padding:11px 14px;cursor:pointer}.sr-item:hover{background:var(--gold-soft)}
+.sr-item .tt{font-size:14px;flex:1}.sr-item .bd{font-size:10px;color:var(--gold);border:1px solid rgba(242,182,50,.4);border-radius:50px;padding:2px 10px}
+.sr-empty{padding:14px;text-align:center;color:var(--muted);font-size:13px}
+.burger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:6px}
+.burger span{width:26px;height:3px;background:var(--gold);border-radius:5px;transition:.3s}
+.burger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px)}.burger.active span:nth-child(2){opacity:0}.burger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px)}
+.m-panel{position:fixed;top:0;right:-100%;width:82%;max-width:340px;height:100vh;background:var(--navy2);z-index:1500;transition:.4s;padding:25px;overflow-y:auto}
+.m-panel.open{right:0}.m-panel .close-x{background:none;border:none;color:var(--gold);font-size:26px;cursor:pointer;margin-bottom:15px}
+.m-search{margin-bottom:15px;position:relative}
+.m-search input{width:100%;padding:11px 16px;border-radius:10px;border:1px solid #1e3a5f;background:#0a1a2f;color:#fff;font-family:inherit;font-size:14px}
+.m-search .search-results{top:105%}
+.m-menu{list-style:none}.m-menu>li{border-bottom:1px solid #1e3a5f}
+.m-menu>li>a,.m-menu>li>button{display:flex;justify-content:space-between;align-items:center;width:100%;color:#e2e8f0;text-decoration:none;background:none;border:none;padding:14px 4px;font-size:16px;font-family:inherit;cursor:pointer}
+.m-sub{list-style:none;display:none;padding:0 12px 12px;background:rgba(0,0,0,.15);border-radius:10px}.m-sub.open{display:block}
+.m-sub a{display:block;color:#9fb2c8;text-decoration:none;padding:8px 10px;font-size:14px}.m-sub a:hover{color:var(--gold)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1400;display:none}.overlay.show{display:block}
+
+.hero{text-align:center;padding:70px 0 40px}
+.hero .kicker{display:inline-block;background:var(--gold-soft);border:1px solid rgba(242,182,50,.3);color:var(--gold);border-radius:50px;padding:7px 20px;font-size:13px;font-weight:700;margin-bottom:20px}
+.hero h1{font-size:clamp(28px,5vw,42px);font-weight:900;margin-bottom:12px}.hero h1 b{color:var(--gold)}
+.hero p{color:var(--muted);font-size:16px;max-width:620px;margin:0 auto 25px}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-gold{display:inline-block;background:var(--grad-gold);color:var(--navy);padding:14px 34px;border-radius:12px;font-weight:800;font-size:15px;border:none;cursor:pointer;font-family:inherit;transition:.3s;text-decoration:none}
+.btn-gold:hover{transform:translateY(-4px);box-shadow:0 15px 35px rgba(242,182,50,.35)}
+.btn-line{display:inline-block;border:2px solid var(--line);color:#dce6f2;padding:12px 30px;border-radius:12px;font-weight:700;font-size:15px;text-decoration:none;transition:.3s}
+.btn-line:hover{border-color:var(--gold);color:var(--gold)}
+.sec-title{text-align:center;font-size:clamp(22px,3.5vw,28px);font-weight:900;margin:60px 0 12px}
+.sec-title u{text-decoration:none;border-bottom:4px solid var(--gold);padding-bottom:6px}
+.sec-desc{text-align:center;color:var(--muted);font-size:14px;margin:0 auto 35px;max-width:640px}
+.feats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px}
+.feat{background:var(--navy2);border:1px solid var(--line);border-radius:16px;padding:20px 14px;text-align:center;transition:.3s}
+.feat:hover{border-color:var(--gold);transform:translateY(-5px)}
+.feat .ico{font-size:30px;margin-bottom:10px}
+.feat h4{font-size:13px;margin-bottom:4px}
+.feat p{color:var(--muted);font-size:11px}
+.feat.new{border-color:rgba(74,222,128,.5)}
+.feat.new h4{color:var(--green)}
+/* دموی پایپ‌لاین */
+.demo{background:var(--navy2);border:1px solid rgba(242,182,50,.4);border-radius:24px;padding:35px;margin-bottom:60px}
+.demo-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px}
+.demo-head h3{font-size:19px;font-weight:900}
+.demo-head .hint{color:var(--muted);font-size:12px}
+.rev-box{background:var(--navy);border:1px dashed var(--gold);border-radius:14px;padding:10px 22px;text-align:center}
+.rev-box b{display:block;color:var(--gold);font-size:20px;font-weight:900}
+.rev-box span{font-size:11px;color:var(--muted)}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.col{background:var(--navy);border:1px solid var(--line);border-radius:14px;padding:12px;min-height:220px}
+.col h5{text-align:center;font-size:12px;color:var(--muted);margin-bottom:12px;font-weight:700}
+.col h5 b{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px}
+.deal{background:var(--navy2);border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;cursor:pointer;transition:.25s;position:relative}
+.deal:hover{border-color:var(--gold);transform:scale(1.03)}
+.deal .dn{font-size:12px;font-weight:700;margin-bottom:4px}
+.deal .dv{font-size:11px;color:var(--gold)}
+.deal .tag{position:absolute;top:8px;left:8px;font-size:9px;border-radius:50px;padding:1px 8px}
+.tag.hot{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.4)}
+.tag.cold{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.4)}
+.deal.s2{border-color:rgba(74,222,128,.5)}
+.deal.s3{opacity:.5}
+/* فرم */
+.wait-card{background:var(--navy2);border:1px solid rgba(242,182,50,.4);border-radius:24px;padding:40px;max-width:640px;margin:0 auto 60px;text-align:center}
+.wait-card h2{font-size:clamp(20px,3vw,26px);font-weight:900;margin-bottom:8px}
+.wait-card>p{color:var(--muted);font-size:14px;margin-bottom:25px}
+.w-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:right}
+.w-form input{padding:12px 16px;border-radius:10px;border:1px solid var(--line);background:var(--navy);color:#e2e8f0;font-family:inherit;font-size:14px}
+.w-form input:focus{outline:none;border-color:var(--gold)}
+.w-form .full{grid-column:1/-1}
+.w-form button{grid-column:1/-1;background:var(--grad-gold);color:var(--navy);border:none;border-radius:12px;padding:14px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;transition:.3s}
+.w-form button:hover{transform:translateY(-3px)}
+.w-ok{display:none;padding:25px;color:var(--green);font-weight:700;background:rgba(74,222,128,.08);border-radius:14px;font-size:15px}
+
+footer{background:var(--navy);color:#cfd8e3;border-top:1px solid var(--line)}
+.footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:40px;padding:60px 0 40px}
+.f-col h4{color:var(--gold);font-size:16px;margin-bottom:18px;font-weight:800}
+.f-col .f-desc{font-size:13px;color:var(--muted);margin:14px 0 18px}
+.f-links{list-style:none}.f-links li{margin-bottom:10px}
+.f-links a{color:#9fb2c8;font-size:13px;text-decoration:none;transition:.2s;display:inline-block}
+.f-links a:hover{color:var(--gold);transform:translateX(-4px)}
+.f-contact{list-style:none}
+.f-contact li{display:flex;gap:10px;align-items:center;margin-bottom:14px;font-size:13px}
+.f-contact .c-ico{width:38px;height:38px;border:1px solid rgba(242,182,50,.4);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--gold-soft);flex-shrink:0}
+.f-contact a{color:#e2e8f0;text-decoration:none;font-weight:700}.f-contact a:hover{color:var(--gold)}
+.f-social{display:flex;gap:10px}
+.f-social a{width:40px;height:40px;border:1px solid #2a4a73;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#cfd8e3;text-decoration:none;transition:.3s}
+.f-social a:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-4px)}.f-social svg{width:18px;height:18px}
+.footer-bottom{border-top:1px solid var(--line);padding:22px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.fb-copy{font-size:12px;color:var(--muted)}.fb-copy b{color:var(--gold)}
+.fb-badges{display:flex;gap:10px}
+.badge-box{width:70px;height:70px;border:1px dashed #2a4a73;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);text-align:center;padding:4px}
+.to-top{position:fixed;bottom:25px;left:25px;width:50px;height:50px;border:none;border-radius:50%;background:var(--grad-gold);color:var(--navy);font-size:20px;font-weight:900;cursor:pointer;opacity:0;visibility:hidden;transition:.3s;z-index:1200}
+.to-top.show{opacity:1;visibility:visible}
+.float-ble{position:fixed;bottom:25px;right:25px;width:56px;height:56px;border-radius:50%;background:var(--grad-gold);color:var(--navy);display:flex;align-items:center;justify-content:center;text-decoration:none;z-index:1200;box-shadow:0 10px 25px rgba(242,182,50,.4);animation:pulse 2.4s infinite}
+.float-ble svg{width:26px;height:26px}
+@keyframes pulse{0%,100%{box-shadow:0 10px 25px rgba(242,182,50,.4),0 0 0 0 rgba(242,182,50,.5)}50%{box-shadow:0 10px 25px rgba(242,182,50,.4),0 0 0 18px rgba(242,182,50,0)}}
+.js .reveal{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.4,0,.2,1)}.js .reveal.on{opacity:1;transform:translateY(0)}
+@media (max-width:980px){.menu{display:none}.burger{display:flex}.topbar{display:flex}.search-console{display:none}.feats{grid-template-columns:repeat(2,1fr)}.board{grid-template-columns:repeat(2,1fr)}.footer-top{grid-template-columns:1fr 1fr}.footer-bottom{justify-content:center;text-align:center}}
+@media (max-width:640px){.announce{flex-wrap:nowrap;justify-content:flex-start;gap:8px;padding:9px 12px 9px 34px}.announce .an-text{flex:1;min-width:0;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.announce .an-text b{display:none}.an-btn{font-size:11px;padding:6px 14px}.announce .close-a{left:6px;width:22px;height:22px;font-size:14px}.announce-form input{width:100%}.footer-top{grid-template-columns:1fr}.feats{grid-template-columns:1fr 1fr}.board{grid-template-columns:1fr}.w-form{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+
+<div class="announce" id="announceBar">
+    <span class="an-text">🎁 <b>پیشنهاد هفته</b> مشاوره رایگان برای ۲۰ نفر اول</span>
+    <button class="an-btn" onclick="openAnForm()">همین الان رزرو کن</button>
+    <button class="close-a" onclick="closeAnnounce()">✕</button>
+</div>
+<div class="announce-form" id="announceForm">
+    <input type="text" id="anName" placeholder="نام و نام خانوادگی">
+    <input type="tel" id="anMobile" placeholder="شماره موبایل">
+    <button onclick="submitAnForm()">ثبت و رفتن به آزمون ←</button>
+</div>
+
+<div class="topbar">
+    <div class="topbar-left">
+        <a href="#" class="soon" title="سبد خرید"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1.5"/><circle cx="19" cy="21" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6L23 7H6"/></svg></a>
+        <a href="tel:+989120281178" title="تماس"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg></a>
+    </div>
+    <div class="topbar-right"><button onclick="toggleSearch()" title="جستجو"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></button></div>
+</div>
+<div class="search-row" id="searchRow"><input type="text" id="searchInput" placeholder="🔍 جستجو در جیبیکو..." autocomplete="off"><div class="search-results" id="searchResults"></div></div>
+
+<header id="header">
+    <div class="wrap nav">
+        <a href="index.html" class="logo-box"><span class="logo">جیبیکو</span><span class="logo-tag">از استعداد تا درآمد</span></a>
+        <div class="search-console">
+            <svg class="s-mag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+            <input type="text" id="dSearchInput" placeholder="جستجو در جیبیکو..." autocomplete="off">
+            <div class="search-results" id="dSearchResults"></div>
+        </div>
+        <ul class="menu">
+            <li><a href="index.html">صفحه اصلی</a></li>
+            <li class="has-drop"><a href="#">حساب کاربری من <span class="caret">▼</span></a>
+                <ul class="drop"><li><a href="#" class="soon">پیشخوان من</a></li><li><a href="#" class="soon">لایسنس‌های من</a></li><li><a href="#" class="soon">سفارش‌ها</a></li><li><a href="#" class="soon">پیگیری سفارش</a></li><li><a href="#" class="soon">پروفایل</a></li><li><a href="#" class="soon">خروج از سیستم</a></li></ul></li>
+            <li class="has-drop"><a href="#">آموزش‌های رایگان <span class="caret">▼</span></a>
+                <ul class="drop"><li><a href="articles.html">مقالات</a></li><li><a href="videos.html">ویدیوهای آموزشی</a></li></ul></li>
+            <li class="has-drop"><a href="shop.html">فروشگاه <span class="caret">▼</span></a>
+                <ul class="drop"><li><a href="products.html">محصولات آموزشی</a></li><li><a href="online.html">آنلاین‌سازی کسب‌وکار</a></li><li><a href="subs.html">اشتراک‌ها</a></li><li><a href="crm.html" class="active-home">CRM</a></li></ul></li>
+            <li><a href="support.html">پشتیبانی</a></li>
+            <li><a href="about.html">جیبیکو چیست؟</a></li>
+            <li class="ble"><a href="https://ble.ir/jibicoclub" target="_blank">کانال بله</a></li>
+        </ul>
+        <button class="burger" id="burger" onclick="togglePanel()"><span></span><span></span><span></span></button>
+    </div>
+</header>
+<div class="overlay" id="overlay" onclick="togglePanel()"></div>
+<div class="m-panel" id="mPanel">
+    <button class="close-x" onclick="togglePanel()">✕</button>
+    <div class="m-search"><input type="text" id="mSearchInput" placeholder="🔍 جستجو در جیبیکو..." autocomplete="off"><div class="search-results" id="mSearchResults"></div></div>
+    <ul class="m-menu">
+        <li><a href="index.html">صفحه اصلی</a></li>
+        <li><button onclick="toggleSub(this)">حساب کاربری من <span class="caret">▼</span></button>
+            <ul class="m-sub"><li><a href="#" class="soon">پیشخوان من</a></li><li><a href="#" class="soon">لایسنس‌های من</a></li><li><a href="#" class="soon">سفارش‌ها</a></li><li><a href="#" class="soon">پیگیری سفارش</a></li><li><a href="#" class="soon">پروفایل</a></li><li><a href="#" class="soon">خروج از سیستم</a></li></ul></li>
+        <li><button onclick="toggleSub(this)">آموزش‌های رایگان <span class="caret">▼</span></button>
+            <ul class="m-sub"><li><a href="articles.html">مقالات</a></li><li><a href="videos.html">ویدیوهای آموزشی</a></li></ul></li>
+        <li><button onclick="toggleSub(this)">فروشگاه <span class="caret">▼</span></button>
+            <ul class="m-sub"><li><a href="products.html">محصولات آموزشی</a></li><li><a href="online.html">آنلاین‌سازی کسب‌وکار</a></li><li><a href="subs.html">اشتراک‌ها</a></li><li><a href="crm.html" style="color:var(--gold);font-weight:800">CRM</a></li></ul></li>
+        <li><a href="support.html">پشتیبانی</a></li>
+        <li><a href="about.html">جیبیکو چیست؟</a></li>
+        <li><a href="https://ble.ir/jibicoclub" target="_blank" style="color:var(--gold)">کانال بله</a></li>
+    </ul>
+</div>
+
+<div class="wrap">
+    <div class="hero">
+        <span class="kicker">📊 CRM فروش جیبیکو</span>
+        <h1>مشتری‌هات رو <b>نظم</b> بده، درآمدت رو <b>دیده</b>بان</h1>
+        <p>یک CRM حرفه‌ای به سبک بهترین‌های بازار — با لید خودکار، پایپ‌لاین فروش، فاکتورزنی و گزارش درآمد؛ به‌علاوه اتصال به شبکه مشاور خرید جیبیکو.</p>
+        <div class="hero-btns">
+            <a class="btn-gold" href="#demo">▶ دموی تعاملی پایپ‌لاین</a>
+            <a class="btn-line" href="https://ble.ir/jibicoclub" target="_blank">سفارش از طریق بله</a>
+        </div>
+    </div>
+
+    <h2 class="sec-title reveal"><u>امکانات، به سبک حرفه‌ای‌ها</u></h2>
+    <p class="sec-desc">هر چیزی که یک CRM کامل داره — به‌علاوه امضای جیبیکو.</p>
+    <div class="feats reveal">
+        <div class="feat"><div class="ico">📥</div><h4>ثبت خودکار لید</h4><p>فرم‌های سایت مستقیم وارد CRM می‌شن</p></div>
+        <div class="feat"><div class="ico">🧭</div><h4>پایپ‌لاین فروش</h4><p>مراحل معامله از لید تا نهایی</p></div>
+        <div class="feat new"><div class="ico">🧾</div><h4>فاکتورزنی</h4><p>فاکتور و پیش‌فاکتور فروش</p></div>
+        <div class="feat"><div class="ico">⏰</div><h4>یادآور هوشمند</h4><p>هیچ پیگیری‌ای فراموش نمی‌شه</p></div>
+        <div class="feat"><div class="ico">🕐</div><h4>تاریخچه کامل</h4><p>تماس، پیام و جلسه در یک‌جا</p></div>
+        <div class="feat"><div class="ico">📊</div><h4>گزارش درآمد</h4><p>قیف فروش و عملکرد لحظه‌ای</p></div>
+        <div class="feat"><div class="ico">🏷️</div><h4>برچسب‌گذاری</h4><p>داغ / سرد / نهایی‌شده</p></div>
+        <div class="feat"><div class="ico">✉️</div><h4>پیامک و ایمیل</h4><p>کمپین و اطلاع‌رسانی خودکار</p></div>
+        <div class="feat"><div class="ico">🔐</div><h4>سطح دسترسی تیم</h4><p>هر عضو، فقط کار خودش</p></div>
+        <div class="feat new"><div class="ico">🤝</div><h4>اتصال به مشاور خرید</h4><p>شبکه مشاوران جیبیکو کنار تو</p></div>
+    </div>
+
+    <!-- دموی تعاملی -->
+    <div class="demo reveal" id="demo">
+        <div class="demo-head">
+            <div><h3>🎮 دموی تعاملی پایپ‌لاین</h3><span class="hint">روی هر مشتری کلیک کن تا به مرحله بعد بره — درآمد نهایی‌شده رو ببین.</span></div>
+            <div class="rev-box"><b id="revNum">۰</b><span>درآمد نهایی‌شده (تومان)</span></div>
+        </div>
+        <div class="board" id="board"></div>
+    </div>
+
+    <div class="wait-card reveal">
+        <h2>🚀 تو صف راه‌اندازی CRM</h2>
+        <p>CRM جیبیکو در فاز بک‌اند فعال می‌شه؛ همین حالا جا رزرو کن تا با انتشار، جزو اولین‌ها باشی.</p>
+        <form class="w-form" id="wForm" onsubmit="submitWait(event)">
+            <input type="text" id="wName" placeholder="نام و نام خانوادگی" required>
+            <input type="tel" id="wMobile" placeholder="شماره موبایل" required>
+            <input type="text" id="wBiz" class="full" placeholder="(اختیاری) نام کسب‌وکار">
+            <button type="submit">رزرو جای من ←</button>
+        </form>
+        <div class="w-ok" id="wOk">✅ جای تو در صف راه‌اندازی CRM رزرو شد؛ با انتشار، اول به تو خبر می‌دیم!</div>
+    </div>
+</div>
+
+<footer>
+    <div class="wrap footer-top">
+        <div class="f-col">
+            <a href="index.html" class="logo-box"><span class="logo">جیبیکو</span><span class="logo-tag">از استعداد تا درآمد</span></a>
+            <p class="f-desc">جیبیکو با تحلیل شخصیت، استعداد و شرایط تو، نقشه راه اختصاصی رشد درآمد می‌سازه — نه یه نسخه عمومی برای همه.</p>
+            <div class="f-social">
+                <a href="https://ble.ir/jibicoclub" target="_blank" title="بله"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></a>
+                <a href="https://www.instagram.com/invites/contact/?utm_source=ig_contact_invite&utm_medium=copy_link&utm_content=b878nx4" target="_blank" title="اینستاگرام"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+            </div>
+        </div>
+        <div class="f-col"><h4>دسترسی سریع</h4><ul class="f-links">
+            <li><a href="index.html">صفحه اصلی</a></li><li><a href="azmoon.html">آزمون رایگان</a></li><li><a href="about.html">جیبیکو چیست؟</a></li><li><a href="support.html">پشتیبانی</a></li>
+        </ul></div>
+        <div class="f-col"><h4>آموزش و فروشگاه</h4><ul class="f-links">
+            <li><a href="articles.html">مقالات</a></li><li><a href="videos.html">ویدیوهای آموزشی</a></li><li><a href="products.html">محصولات آموزشی</a></li><li><a href="subs.html">اشتراک‌ها</a></li><li><a href="crm.html">CRM فروش</a></li>
+        </ul></div>
+        <div class="f-col"><h4>تماس با ما</h4><ul class="f-contact">
+            <li><span class="c-ico">📞</span><a href="tel:+989120281178">۰۹۱۲۰۲۸۱۱۷۸</a></li>
+            <li><span class="c-ico">🕐</span><span>پشتیبانی در ساعات کاری</span></li>
+            <li><span class="c-ico">📣</span><a href="https://ble.ir/jibicoclub" target="_blank">کانال بله جیبیکو</a></li>
+        </ul></div>
+    </div>
+    <div class="wrap footer-bottom">
+        <div class="fb-copy">© <span id="cpyYear">۱۴۰۵</span> <b>جیبیکو</b> — کلیه حقوق محفوظ است. از استعداد تا درآمد 💛</div>
+        <div class="fb-badges"><div class="badge-box">نماد اعتماد</div><div class="badge-box">ساماندهی</div></div>
+    </div>
+</footer>
+
+<a class="float-ble" href="https://ble.ir/jibicoclub" target="_blank" title="کانال بله"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></a>
+<button class="to-top" id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+(function(){
+"use strict";
+var PHONE='09120281178';
+try{ document.getElementById('cpyYear').textContent = new Intl.DateTimeFormat('fa-IR',{year:'numeric'}).format(new Date()); }catch(e){}
+
+/* ===== دموی پایپ‌لاین ===== */
+var STAGES=['لید جدید','در مذاکره','نهایی‌شده','از دست رفته'];
+var SCOLOR=['#60a5fa','#f2b632','#4ade80','#f87171'];
+var deals=[
+ {n:'فروش کاوه',v:12000000,s:1,t:'hot'},
+ {n:'سارا احمدی',v:4500000,s:0,t:'cold'},
+ {n:'شرکت رادین',v:25000000,s:2,t:'hot'},
+ {n:'گالری نیکا',v:8000000,s:0,t:'cold'},
+ {n:'آرمون تک',v:15000000,s:1,t:'hot'}
+];
+function fa(n){return n.toLocaleString('fa-IR');}
+function renderBoard(){
+    var html='';
+    for(var c=0;c<4;c++){
+        html+='<div class="col"><h5><b style="background:'+SCOLOR[c]+'"></b>'+STAGES[c]+'</h5>';
+        deals.forEach(function(d,i){
+            if(d.s!==c)return;
+            html+='<div class="deal s'+d.s+'" onclick="moveDeal('+i+')" title="کلیک کن">'+
+                '<span class="tag '+d.t+'">'+(d.t==='hot'?'داغ':'سرد')+'</span>'+
+                '<div class="dn">'+d.n+'</div><div class="dv">'+fa(d.v)+' تومان</div></div>';
+        });
+        html+='</div>';
+    }
+    document.getElementById('board').innerHTML=html;
+    var rev=0;deals.forEach(function(d){if(d.s===2)rev+=d.v;});
+    document.getElementById('revNum').textContent=fa(rev);
+}
+window.moveDeal=function(i){deals[i].s=(deals[i].s+1)%4;renderBoard();};
+renderBoard();
+
+window.submitWait=function(ev){
+    ev.preventDefault();
+    var name=document.getElementById('wName').value.trim();
+    var mobile=document.getElementById('wMobile').value.trim();
+    if(!name){toast('لطفاً نامت رو بنویس.');return;}
+    if(!/^09\d{9}$/.test(mobile)){toast('شماره موبایل معتبر وارد کن (مثل '+PHONE+').');return;}
+    document.getElementById('wForm').style.display='none';
+    document.getElementById('wOk').style.display='block';
+};
+
+var SEARCH_INDEX=[
+ {t:'صفحه اصلی',u:'index.html',b:'صفحه',k:'خانه اصلی'},
+ {t:'آزمون رایگان تشخیص',u:'azmoon.html',b:'صفحه',k:'ازمون mbti disc شخصیت'},
+ {t:'جیبیکو چیست؟',u:'about.html',b:'صفحه',k:'درباره معرفی'},
+ {t:'پشتیبانی',u:'support.html',b:'صفحه',k:'تماس کمک'},
+ {t:'فروشگاه',u:'shop.html',b:'صفحه',k:'خرید'},
+ {t:'محصولات آموزشی',u:'products.html',b:'صفحه',k:'دوره کتاب کارگاه'},
+ {t:'آنلاین‌سازی کسب‌وکار',u:'online.html',b:'صفحه',k:'سایت طراحی'},
+ {t:'اشتراک‌ها',u:'subs.html',b:'صفحه',k:'پلاس پرو پلاتینیوم تامین مشاور'},
+ {t:'CRM فروش',u:'crm.html',b:'صفحه',k:'مشتری فاکتور پایپ لاین'},
+ {t:'مقالات',u:'articles.html',b:'صفحه',k:'مقاله بلاگ'},
+ {t:'ویدیوهای آموزشی',u:'videos.html',b:'صفحه',k:'ویدیو فیلم'}
+];
+function bindSearch(inputId,resultsId){
+    var inp=document.getElementById(inputId),res=document.getElementById(resultsId);
+    if(!inp||!res)return;
+    inp.addEventListener('input',function(){
+        var q=inp.value.trim();
+        if(!q){res.classList.remove('open');res.innerHTML='';return;}
+        var hits=SEARCH_INDEX.filter(function(it){return (it.t+' '+it.k).indexOf(q)>-1;}).slice(0,8);
+        if(!hits.length){res.innerHTML='<div class="sr-empty">نتیجه‌ای پیدا نشد 🤔</div>';res.classList.add('open');return;}
+        var html='';
+        hits.forEach(function(it){html+='<div class="sr-item" data-u="'+it.u+'"><span class="tt">'+it.t+'</span><span class="bd">'+it.b+'</span></div>';});
+        res.innerHTML=html;res.classList.add('open');
+    });
+    res.addEventListener('click',function(e){var item=e.target.closest('.sr-item');if(item)window.location.href=item.getAttribute('data-u');});
+    document.addEventListener('click',function(e){if(!e.target.closest('#'+inputId)&&!e.target.closest('#'+resultsId))res.classList.remove('open');});
+}
+bindSearch('dSearchInput','dSearchResults');
+bindSearch('searchInput','searchResults');
+bindSearch('mSearchInput','mSearchResults');
+
+window.openAnForm=function(){
+    document.getElementById('announceForm').classList.toggle('open');
+    if(document.getElementById('announceForm').classList.contains('open'))document.getElementById('anName').focus();
+};
+window.submitAnForm=function(){
+    var name=document.getElementById('anName').value.trim();
+    var mobile=document.getElementById('anMobile').value.trim();
+    if(!name){toast('لطفاً نامت رو بنویس.');return;}
+    if(!/^09\d{9}$/.test(mobile)){toast('شماره موبایل معتبر وارد کن (مثل '+PHONE+').');return;}
+    window.location.href='azmoon.html';
+};
+window.closeAnnounce=function(){
+    document.getElementById('announceBar').style.display='none';
+    document.getElementById('announceForm').classList.remove('open');
+};
+function toast(msg){var t=document.createElement('div');t.textContent=msg;t.style.cssText='position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#0e2440;color:#f2b632;padding:12px 26px;border-radius:50px;border:1px solid rgba(242,182,50,.5);z-index:2000;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.4);transition:opacity .4s;font-family:inherit';document.body.appendChild(t);setTimeout(function(){t.style.opacity='0';},2200);setTimeout(function(){t.remove();},2700);}
+document.addEventListener('click',function(e){var el=e.target.closest?e.target.closest('a.soon'):null;if(el){e.preventDefault();toast('🚧 این بخش در فازهای بعدی ساخته می‌شه.');}});
+window.togglePanel=function(){document.getElementById('mPanel').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');document.getElementById('burger').classList.toggle('active');};
+window.toggleSub=function(btn){var sub=btn.nextElementSibling;if(sub)sub.classList.toggle('open');};
+window.toggleSearch=function(){document.getElementById('searchRow').classList.toggle('open');if(document.getElementById('searchRow').classList.contains('open'))document.getElementById('searchInput').focus();};
+window.addEventListener('scroll',function(){var y=window.pageYOffset||0;var h=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('prog').style.width=(h>0?(y/h)*100:0)+'%';document.getElementById('header').classList.toggle('scrolled',y>60);document.getElementById('toTop').classList.toggle('show',y>500);},{passive:true});
+try{if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('on');io.unobserve(en.target);}});},{threshold:.15});document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});}else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('on');});}}catch(e){document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('on');});}
+})();
+</script>
+</body>
+</html>

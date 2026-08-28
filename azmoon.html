@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جیبیکو | آزمون رایگان تشخیص و تحلیل شخصیت</title>
+<link href="https://fonts.cdnfonts.com/css/dana" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+:root{
+    --navy:#0a1a2f; --navy2:#0e2440; --navy3:#122c4d;
+    --gold:#f2b632; --gold2:#d99a1b; --gold-soft:rgba(242,182,50,.12);
+    --light:#f6f8fb; --white:#ffffff; --ink:#16283c; --muted:#5b7086;
+    --line:#1e3a5f;
+    --grad-gold:linear-gradient(135deg,#f7c948,#e0a416);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Dana','Segoe UI',Tahoma,sans-serif;background:var(--navy);color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0;line-height:1.9;overflow-x:hidden}
+a{text-decoration:none}
+.wrap{max-width:1150px;margin:0 auto;padding:0 20px}
+
+.announce{background:var(--grad-gold);color:var(--navy);text-align:center;padding:10px 40px 10px 20px;font-size:14px;font-weight:700;position:relative;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;width:100%}
+.announce b{background:rgba(10,26,47,.15);padding:2px 10px;border-radius:50px;margin-left:8px}
+.an-btn{background:var(--navy);color:var(--gold);border:none;border-radius:50px;padding:6px 20px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:.3s;white-space:nowrap}
+.an-btn:hover{transform:scale(1.06)}
+.announce .close-a{position:absolute;left:12px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;cursor:pointer;color:var(--navy);width:28px;height:28px;border-radius:50%}
+.announce .close-a:hover{background:rgba(10,26,47,.1)}
+.announce-form{display:none;background:var(--navy2);padding:14px 20px;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--line);width:100%}
+.announce-form.open{display:flex}
+.announce-form input{padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:var(--navy);color:#e2e8f0;font-family:inherit;font-size:13px;width:190px}
+.announce-form input:focus{outline:none;border-color:var(--gold)}
+.announce-form button{background:var(--grad-gold);color:var(--navy);border:none;border-radius:10px;padding:10px 24px;font-family:inherit;font-weight:800;cursor:pointer;transition:.3s}
+.announce-form button:hover{transform:translateY(-2px)}
+
+.topbar{display:none;background:#071322;padding:10px 20px;justify-content:space-between;align-items:center;width:100%}
+.topbar-left,.topbar-right{display:flex;gap:18px;align-items:center}
+.topbar button,.topbar a{background:none;border:none;color:#cfd8e3;cursor:pointer;padding:4px;text-decoration:none}
+.topbar svg{width:22px;height:22px}
+.search-row{display:none;background:#071322;padding:0 20px 12px;position:relative;width:100%}
+.search-row.open{display:block}
+.search-row input{width:100%;padding:10px 15px;border-radius:10px;border:1px solid #1e3a5f;background:#0a1a2f;color:#fff;font-family:inherit}
+
+#prog{position:fixed;top:0;right:0;height:3px;background:var(--grad-gold);width:0;z-index:1100}
+header{background:var(--navy);position:sticky;top:0;z-index:1000;transition:.3s;width:100%}
+header.scrolled{box-shadow:0 8px 30px rgba(0,0,0,.35)}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:14px 0;gap:15px}
+.logo-box{display:flex;flex-direction:column;line-height:1.4}
+.logo{font-size:26px;font-weight:900;color:var(--gold)}
+.logo-tag{font-size:11px;color:#8fa3ba}
+.menu{display:flex;list-style:none;gap:6px;align-items:center}
+.menu > li{position:relative}
+.menu > li > a{color:#dce6f2;text-decoration:none;padding:10px 14px;border-radius:10px;font-size:15px;display:block;transition:.25s;cursor:pointer}
+.menu > li > a:hover{background:var(--gold-soft);color:var(--gold)}
+.menu .ble a{color:var(--gold);border:1px solid rgba(242,182,50,.4);border-radius:50px;margin-right:6px;padding:9px 18px}
+.menu .ble a:hover{background:var(--gold);color:var(--navy)}
+.drop{display:none;position:absolute;top:100%;right:0;background:var(--navy2);border:1px solid #1e3a5f;border-radius:14px;min-width:210px;padding:10px;box-shadow:0 20px 40px rgba(0,0,0,.4);list-style:none;z-index:999}
+.menu li.has-drop:hover .drop{display:block}
+.drop a{display:block;color:#cfd8e3;text-decoration:none;padding:9px 14px;border-radius:9px;font-size:14px;transition:.2s}
+.drop a:hover{background:var(--gold-soft);color:var(--gold);padding-right:20px}
+.caret{font-size:10px;opacity:.7}
+.search-console{position:relative;flex:1;max-width:320px;margin:0 10px}
+.search-console .s-mag{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted);pointer-events:none}
+.search-console input{width:100%;padding:10px 40px 10px 14px;border-radius:50px;border:1px solid var(--line);background:var(--navy2);color:#e2e8f0;font-family:inherit;font-size:13px;transition:.3s}
+.search-console input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(242,182,50,.15)}
+.search-results{position:absolute;top:115%;right:0;left:0;background:var(--navy2);border:1px solid var(--line);border-radius:14px;max-height:340px;overflow-y:auto;display:none;z-index:1200;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.search-results.open{display:block}
+.sr-item{display:flex;gap:10px;align-items:center;padding:11px 14px;cursor:pointer;transition:.2s}
+.sr-item:hover{background:var(--gold-soft)}
+.sr-item .ic{font-size:18px}
+.sr-item .tt{font-size:14px;color:#e2e8f0;flex:1}
+.sr-item .bd{font-size:10px;color:var(--gold);border:1px solid rgba(242,182,50,.4);border-radius:50px;padding:2px 10px;white-space:nowrap}
+.sr-empty{padding:16px;text-align:center;color:var(--muted);font-size:13px}
+.burger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:6px}
+.burger span{width:26px;height:3px;background:var(--gold);border-radius:5px;transition:.3s}
+.burger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px)}
+.burger.active span:nth-child(2){opacity:0}
+.burger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px)}
+.m-panel{position:fixed;top:0;right:-100%;width:82%;max-width:340px;height:100vh;background:var(--navy2);z-index:1500;transition:.4s;padding:25px;overflow-y:auto}
+.m-panel.open{right:0}
+.m-panel .close-x{background:none;border:none;color:var(--gold);font-size:26px;cursor:pointer;margin-bottom:15px}
+.m-search{margin-bottom:15px;position:relative}
+.m-search input{width:100%;padding:11px 16px;border-radius:10px;border:1px solid #1e3a5f;background:#0a1a2f;color:#fff;font-family:inherit;font-size:14px}
+.m-search .search-results{top:105%}
+.m-menu{list-style:none}
+.m-menu > li{border-bottom:1px solid #1e3a5f}
+.m-menu > li > a,.m-menu > li > button{display:flex;justify-content:space-between;align-items:center;width:100%;color:#e2e8f0;text-decoration:none;background:none;border:none;padding:14px 4px;font-size:16px;font-family:inherit;cursor:pointer}
+.m-sub{list-style:none;display:none;padding:0 12px 12px;background:rgba(0,0,0,.15);border-radius:10px}
+.m-sub.open{display:block}
+.m-sub a{display:block;color:#9fb2c8;text-decoration:none;padding:8px 10px;font-size:14px}
+.m-sub a:hover{color:var(--gold)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1400;display:none}
+.overlay.show{display:block}
+
+.main{width:100%;max-width:640px;padding:20px;display:flex;flex-direction:column;align-items:center}
+
+.progress-wrap{width:100%;margin-bottom:20px;display:none;position:sticky;top:70px;z-index:100;background:var(--navy);padding:15px 0;border-radius:16px}
+.progress-text{font-size:13px;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between}
+.progress-text b{color:var(--gold)}
+.progress-bar{height:8px;background:var(--navy2);border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.progress-fill{height:100%;width:0%;background:var(--grad-gold);border-radius:10px;transition:width .4s}
+
+.card{width:100%;background:var(--navy2);border:1px solid var(--line);border-radius:20px;padding:35px;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:cardIn .5s ease}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.intro{text-align:center}
+.intro .big{font-size:60px;margin-bottom:15px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.intro h1{font-size:26px;font-weight:900;margin-bottom:12px}
+.intro h1 b{color:var(--gold)}
+.intro p{color:var(--muted);font-size:15px;margin-bottom:25px}
+.chips{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+.chip{background:var(--gold-soft);border:1px solid rgba(242,182,50,.3);color:var(--gold);border-radius:50px;padding:7px 16px;font-size:13px}
+.btn-gold{display:inline-block;background:var(--grad-gold);color:var(--navy);padding:15px 45px;border-radius:12px;font-weight:800;font-size:17px;border:none;cursor:pointer;font-family:inherit;transition:.3s;position:relative;overflow:hidden}
+.btn-gold:hover{transform:translateY(-4px);box-shadow:0 15px 35px rgba(242,182,50,.35)}
+.btn-gold::after{content:'';position:absolute;top:0;right:-80%;width:50%;height:100%;background:rgba(255,255,255,.35);transform:skewX(-25deg);transition:.6s}
+.btn-gold:hover::after{right:130%}
+
+.q-section{font-size:13px;color:var(--gold);font-weight:700;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+.q-text{font-size:19px;font-weight:700;margin-bottom:28px;line-height:1.8;animation:slideIn .4s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.options{display:flex;flex-direction:column;gap:12px}
+.opt{background:var(--navy);border:2px solid var(--line);color:#e2e8f0;border-radius:14px;padding:14px 20px;font-size:15px;cursor:pointer;text-align:right;transition:.25s;font-family:inherit}
+.opt:hover{border-color:var(--gold);transform:translateX(-4px);background:var(--gold-soft)}
+.opt.selected{border-color:var(--gold);background:var(--gold-soft);box-shadow:0 0 20px rgba(242,182,50,.2)}
+.options.likert{flex-direction:row;flex-wrap:wrap}
+.options.likert .opt{flex:1 1 110px;text-align:center;padding:12px 8px;font-size:13px}
+.ta{width:100%;background:var(--navy);border:2px solid var(--line);border-radius:14px;color:#e2e8f0;padding:14px;font-family:inherit;font-size:15px;resize:vertical;min-height:90px}
+.ta:focus{outline:none;border-color:var(--gold)}
+.back-btn{margin-top:22px;background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;font-family:inherit}
+.back-btn:hover{color:var(--gold)}
+
+.loader2{width:50px;height:50px;border:4px solid var(--line);border-top-color:var(--gold);border-radius:50%;margin:0 auto 15px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-text{text-align:center;color:var(--muted);font-size:14px}
+.loader-step{color:var(--gold);font-weight:700;margin-top:10px;font-size:13px;text-align:center}
+
+.report{display:none}
+.rep-emoji{font-size:60px;text-align:center;margin-bottom:10px;animation:bounce 1s ease}
+@keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+.rep-title{font-size:28px;font-weight:900;text-align:center;margin-bottom:8px;color:var(--gold)}
+.rep-headline{text-align:center;color:var(--muted);font-size:16px;margin-bottom:30px}
+.rep-block{background:var(--navy);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px;animation:cardIn .6s ease backwards}
+.rep-block:nth-child(2){animation-delay:.1s}
+.rep-block:nth-child(3){animation-delay:.2s}
+.rep-block:nth-child(4){animation-delay:.3s}
+.rep-block:nth-child(5){animation-delay:.4s}
+.rep-block h4{color:var(--gold);margin-bottom:14px;font-size:16px;display:flex;align-items:center;gap:8px}
+.rep-block p.txt{font-size:15px;color:#cbd5e1;margin-bottom:10px}
+.bar-row{margin-bottom:12px}
+.bar-label{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
+.bar-label b{color:var(--gold)}
+.bar{height:8px;background:var(--navy2);border-radius:10px;overflow:hidden}
+.bar > div{height:100%;background:var(--grad-gold);border-radius:10px;transition:width 1.5s cubic-bezier(.4,0,.2,1)}
+.step{padding:10px 0;border-bottom:1px dashed var(--line);font-size:15px;line-height:1.9}
+.step:last-child{border:none}
+.flag-note{background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.3);border-radius:12px;padding:14px;font-size:14px;margin-bottom:16px;color:#fbbf24}
+.type-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.type-chip{background:var(--gold-soft);border:1px solid rgba(242,182,50,.3);color:var(--gold);border-radius:12px;padding:8px 16px;font-size:14px;font-weight:700}
+.next-box{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+.next-box a,.next-box button{flex:1 1 200px;text-align:center;padding:14px;border-radius:12px;font-weight:700;font-size:15px;transition:.3s;cursor:pointer;font-family:inherit;text-decoration:none}
+.next-gold{background:var(--grad-gold);color:var(--navy);border:none}
+.next-gold:hover{transform:translateY(-3px);box-shadow:0 10px 25px rgba(242,182,50,.3)}
+.next-line{border:2px solid var(--line);color:var(--muted);background:none}
+.next-line:hover{border-color:var(--gold);color:var(--gold)}
+.consult-form{display:none;margin-top:15px;background:var(--navy);border:1px solid var(--line);border-radius:14px;padding:20px;animation:cardIn .4s ease}
+.consult-form.open{display:block}
+.consult-form input,.consult-form select{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--navy2);color:#e2e8f0;margin-bottom:10px;font-family:inherit;font-size:14px}
+.consult-form input:focus,.consult-form select:focus{outline:none;border-color:var(--gold)}
+.consult-ok{display:none;text-align:center;padding:15px;color:#4ade80;font-weight:700;background:rgba(74,222,128,.1);border-radius:10px;margin-top:10px}
+
+footer{background:var(--navy);padding:40px 0;color:#cfd8e3;border-top:1px solid var(--line);width:100%;margin-top:60px}
+.footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:40px;padding:60px 0 40px}
+.f-col h4{color:var(--gold);font-size:16px;margin-bottom:18px;font-weight:800}
+.f-col .f-desc{font-size:13px;color:var(--muted);margin:14px 0 18px}
+.f-links{list-style:none}
+.f-links li{margin-bottom:10px}
+.f-links a{color:#9fb2c8;font-size:13px;text-decoration:none;transition:.2s;display:inline-block}
+.f-links a:hover{color:var(--gold);transform:translateX(-4px)}
+.f-contact{list-style:none}
+.f-contact li{display:flex;gap:10px;align-items:center;margin-bottom:14px;font-size:13px}
+.f-contact .c-ico{width:38px;height:38px;border:1px solid rgba(242,182,50,.4);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--gold-soft);flex-shrink:0}
+.f-contact a{color:#e2e8f0;text-decoration:none;font-weight:700}
+.f-contact a:hover{color:var(--gold)}
+.f-social{display:flex;gap:10px}
+.f-social a{width:40px;height:40px;border:1px solid #2a4a73;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#cfd8e3;text-decoration:none;transition:.3s}
+.f-social a:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-4px)}
+.f-social svg{width:18px;height:18px}
+.footer-bottom{border-top:1px solid var(--line);padding:22px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.fb-copy{font-size:12px;color:var(--muted)}
+.fb-copy b{color:var(--gold)}
+.fb-badges{display:flex;gap:10px}
+.badge-box{width:70px;height:70px;border:1px dashed #2a4a73;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);text-align:center;padding:4px}
+
+.to-top{position:fixed;bottom:25px;left:25px;width:50px;height:50px;border:none;border-radius:50%;background:var(--grad-gold);color:var(--navy);font-size:20px;font-weight:900;cursor:pointer;opacity:0;visibility:hidden;transition:.3s;z-index:1200;box-shadow:0 10px 25px rgba(242,182,50,.4)}
+.to-top.show{opacity:1;visibility:visible}
+.float-ble{position:fixed;bottom:25px;right:25px;width:56px;height:56px;border-radius:50%;background:var(--grad-gold);color:var(--navy);display:flex;align-items:center;justify-content:center;text-decoration:none;z-index:1200;box-shadow:0 10px 25px rgba(242,182,50,.4);transition:.3s;animation:pulse-ble 2.4s infinite}
+.float-ble:hover{transform:translateY(-4px) scale(1.05)}
+.float-ble svg{width:26px;height:26px}
+@keyframes pulse-ble{0%,100%{box-shadow:0 10px 25px rgba(242,182,50,.4),0 0 0 0 rgba(242,182,50,.5)}50%{box-shadow:0 10px 25px rgba(242,182,50,.4),0 0 0 18px rgba(242,182,50,0)}}
+
+@media (max-width:980px){
+    .menu{display:none}
+    .burger{display:flex}
+    .topbar{display:flex}
+    .search-console{display:none}
+    .footer-top{grid-template-columns:1fr 1fr}
+    .footer-bottom{justify-content:center;text-align:center}
+}
+@media (max-width:640px){
+    .announce{flex-wrap:nowrap;justify-content:flex-start;gap:8px;padding:9px 12px 9px 34px}
+    .announce .an-text{flex:1;min-width:0;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .announce .an-text b{display:none}
+    .an-btn{font-size:11px;padding:6px 14px}
+    .announce .close-a{left:6px;width:22px;height:22px;font-size:14px}
+    .announce-form input{width:100%}
+    .footer-top{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+
+<div class="announce" id="announceBar">
+    <span class="an-text">🎁 <b>پیشنهاد هفته</b> مشاوره رایگان برای ۲۰ نفر اول</span>
+    <button class="an-btn" onclick="openAnForm()">همین الان رزرو کن</button>
+    <button class="close-a" onclick="closeAnnounce()">✕</button>
+</div>
+<div class="announce-form" id="announceForm">
+    <input type="text" id="anName" placeholder="نام و نام خانوادگی">
+    <input type="tel" id="anMobile" placeholder="شماره موبایل">
+    <button onclick="submitAnForm()">ثبت و رفتن به آزمون ←</button>
+</div>
+
+<div class="topbar">
+    <div class="topbar-left">
+        <a href="#" class="soon" title="سبد خرید"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1.5"/><circle cx="19" cy="21" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6L23 7H6"/></svg></a>
+        <a href="tel:+989120281178" title="تماس"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg></a>
+    </div>
+    <div class="topbar-right">
+        <button onclick="toggleSearch()" title="جستجو"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></button>
+    </div>
+</div>
+<div class="search-row" id="searchRow">
+    <input type="text" id="searchInput" placeholder="🔍 جستجو در جیبیکو..." autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+</div>
+
+<header id="header">
+    <div class="wrap nav">
+        <a href="index.html" class="logo-box"><span class="logo">جیبیکو</span><span class="logo-tag">از استعداد تا درآمد</span></a>
+        <div class="search-console">
+            <svg class="s-mag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+            <input type="text" id="dSearchInput" placeholder="جستجو در جیبیکو..." autocomplete="off">
+            <div class="search-results" id="dSearchResults"></div>
+        </div>
+        <ul class="menu">
+            <li><a href="index.html">صفحه اصلی</a></li>
+            <li class="has-drop"><a href="#">حساب کاربری من <span class="caret">▼</span></a>
+                <ul class="drop"><li><a href="#" class="soon">پیشخوان من</a></li><li><a href="#" class="soon">لایسنس‌های من</a></li><li><a href="#" class="soon">سفارش‌ها</a></li><li><a href="#" class="soon">پیگیری سفارش</a></li><li><a href="#" class="soon">پروفایل</a></li><li><a href="#" class="soon">خروج از سیستم</a></li></ul></li>
+            <li class="has-drop"><a href="#">آموزش‌های رایگان <span class="caret">▼</span></a>
+                <ul class="drop"><li><a href="articles.html">مقالات</a></li><li><a href="videos.html">ویدیوهای آموزشی</a></li></ul></li>
+            <li class="has-drop"><a href="shop.html">فروشگاه <span class="caret">▼</span></a>
+                <ul class="drop"><li><a href="products.html">محصولات آموزشی</a></li><li><a href="online.html">آنلاین‌سازی کسب‌وکار</a></li><li><a href="subs.html">اشتراک‌ها</a></li><li><a href="crm.html">CRM</a></li></ul></li>
+            <li><a href="support.html">پشتیبانی</a></li>
+            <li><a href="about.html">جیبیکو چیست؟</a></li>
+            <li class="ble"><a href="https://ble.ir/jibicoclub" target="_blank">کانال بله</a></li>
+        </ul>
+        <button class="burger" id="burger" onclick="togglePanel()"><span></span><span></span><span></span></button>
+    </div>
+</header>
+
+<div class="overlay" id="overlay" onclick="togglePanel()"></div>
+<div class="m-panel" id="mPanel">
+    <button class="close-x" onclick="togglePanel()">✕</button>
+    <div class="m-search">
+        <input type="text" id="mSearchInput" placeholder="🔍 جستجو در جیبیکو..." autocomplete="off">
+        <div class="search-results" id="mSearchResults"></div>
+    </div>
+    <ul class="m-menu">
+        <li><a href="index.html">صفحه اصلی</a></li>
+        <li><button onclick="toggleSub(this)">حساب کاربری من <span class="caret">▼</span></button>
+            <ul class="m-sub"><li><a href="#" class="soon">پیشخوان من</a></li><li><a href="#" class="soon">لایسنس‌های من</a></li><li><a href="#" class="soon">سفارش‌ها</a></li><li><a href="#" class="soon">پیگیری سفارش</a></li><li><a href="#" class="soon">پروفایل</a></li><li><a href="#" class="soon">خروج از سیستم</a></li></ul></li>
+        <li><button onclick="toggleSub(this)">آموزش‌های رایگان <span class="caret">▼</span></button>
+            <ul class="m-sub"><li><a href="articles.html">مقالات</a></li><li><a href="videos.html">ویدیوهای آموزشی</a></li></ul></li>
+        <li><button onclick="toggleSub(this)">فروشگاه <span class="caret">▼</span></button>
+            <ul class="m-sub"><li><a href="products.html">محصولات آموزشی</a></li><li><a href="online.html">آنلاین‌سازی کسب‌وکار</a></li><li><a href="subs.html">اشتراک‌ها</a></li><li><a href="crm.html">CRM</a></li></ul></li>
+        <li><a href="support.html">پشتیبانی</a></li>
+        <li><a href="about.html">جیبیکو چیست؟</a></li>
+        <li><a href="https://ble.ir/jibicoclub" target="_blank" style="color:var(--gold)">کانال بله</a></li>
+    </ul>
+</div>
+
+<div class="main">
+    <div class="progress-wrap" id="progressWrap">
+        <div class="progress-text"><span id="progressText"></span><b id="progressPct">0%</b></div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="card intro" id="introCard">
+        <div class="big">🧭</div>
+        <h1>آزمون رایگان <b>تشخیص و تحلیل شخصیت</b></h1>
+        <p>وضعیت فعلی، گلوگاه اصلی درآمد، تایپ شخصیتی MBTI و سبک رفتار DISC تو مشخص می‌شه و گزارش اختصاصی‌ات رو همین‌جا می‌گیری.</p>
+        <div class="chips">
+            <span class="chip">⏱️ حدود ۱۵ دقیقه</span>
+            <span class="chip">🧠 MBTI + DISC</span>
+            <span class="chip">🎯 گزارش آنی</span>
+        </div>
+        <button class="btn-gold" onclick="startQuiz()">شروع آزمون رایگان</button>
+    </div>
+
+    <div class="card" id="quizCard" style="display:none"></div>
+    <div class="card report" id="reportCard"></div>
+</div>
+
+<footer>
+    <div class="wrap footer-top">
+        <div class="f-col">
+            <a href="index.html" class="logo-box"><span class="logo">جیبیکو</span><span class="logo-tag">از استعداد تا درآمد</span></a>
+            <p class="f-desc">جیبیکو با تحلیل شخصیت، استعداد و شرایط تو، نقشه راه اختصاصی رشد درآمد می‌سازه — نه یه نسخه عمومی برای همه.</p>
+            <div class="f-social">
+                <a href="https://ble.ir/jibicoclub" target="_blank" title="بله"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></a>
+                <a href="https://www.instagram.com/invites/contact/?utm_source=ig_contact_invite&utm_medium=copy_link&utm_content=b878nx4" target="_blank" title="اینستاگرام"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+            </div>
+        </div>
+        <div class="f-col"><h4>دسترسی سریع</h4><ul class="f-links">
+            <li><a href="index.html">صفحه اصلی</a></li><li><a href="azmoon.html">آزمون رایگان</a></li><li><a href="about.html">جیبیکو چیست؟</a></li><li><a href="support.html">پشتیبانی</a></li>
+        </ul></div>
+        <div class="f-col"><h4>آموزش و فروشگاه</h4><ul class="f-links">
+            <li><a href="articles.html">مقالات</a></li><li><a href="videos.html">ویدیوهای آموزشی</a></li><li><a href="products.html">محصولات آموزشی</a></li><li><a href="subs.html">اشتراک‌ها</a></li><li><a href="crm.html">CRM فروش</a></li>
+        </ul></div>
+        <div class="f-col"><h4>تماس با ما</h4><ul class="f-contact">
+            <li><span class="c-ico">📞</span><a href="tel:+989120281178">۰۹۱۲۰۲۸۱۱۷۸</a></li>
+            <li><span class="c-ico">🕐</span><span>پشتیبانی در ساعات کاری</span></li>
+            <li><span class="c-ico">📣</span><a href="https://ble.ir/jibicoclub" target="_blank">کانال بله جیبیکو</a></li>
+        </ul></div>
+    </div>
+    <div class="wrap footer-bottom">
+        <div class="fb-copy">© <span id="cpyYear">۱۴۰۵</span> <b>جیبیکو</b> — کلیه حقوق محفوظ است. از استعداد تا درآمد 💛</div>
+        <div class="fb-badges"><div class="badge-box">نماد اعتماد</div><div class="badge-box">ساماندهی</div></div>
+    </div>
+</footer>
+
+<a class="float-ble" href="https://ble.ir/jibicoclub" target="_blank" title="کانال بله"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></a>
+<button class="to-top" id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+var AGENT_URL = '';
+
+var Q1 = [
+ {id:'z1', section:'زمینه', type:'choice', text:'وضعیت فعلی تو کدومه؟', options:[
+    {label:'شاغل', value:'employed'}, {label:'فریلنسر', value:'freelancer'},
+    {label:'بدون درآمد', value:'none'}, {label:'دانشجو', value:'student'}]},
+ {id:'z2', section:'زمینه', type:'likert', text:'در سازمان فعلی‌ام جای رشد یا افزایش درآمد ندارم.', showIf:{field:'z1', equals:'employed'}},
+ {id:'z3', section:'زمینه', type:'likert', text:'مشتری‌هام نامنظم و غیرقابل‌پیش‌بینی میان.', showIf:{field:'z1', equals:'freelancer'}},
+ {id:'m1', section:'مهارت و تخصص', type:'likert', text:'بر مهارت اصلی‌ام تسلط کامل دارم.'},
+ {id:'m2', section:'مهارت و تخصص', type:'likert', text:'نمونه‌کار مستندی دارم که نشون بدم.'},
+ {id:'m3', section:'مهارت و تخصص', type:'likert', text:'سطحم از میانگین هم‌حوزه‌ای‌هام بالاتره.'},
+ {id:'m4', section:'مهارت و تخصص', type:'choice', text:'چند سال سابقه پیوسته در این حوزه داری؟', options:[
+    {label:'کمتر از ۱ سال', value:25}, {label:'۱ تا ۳ سال', value:50},
+    {label:'۳ تا ۷ سال', value:75}, {label:'بیش از ۷ سال', value:100}]},
+ {id:'m5', section:'مهارت و تخصص', type:'likert', text:'در یک سال گذشته، کسی بیرون از دایره آشناها بابت مهارتم پولم داده.'},
+ {id:'b1', section:'بهره‌برداری مالی', type:'choice', text:'چند درصد درآمد ماهانه‌ات از مهارت اصلیته؟', options:[
+    {label:'صفر', value:0}, {label:'کمتر از ۲۵٪', value:25}, {label:'۲۵ تا ۵۰٪', value:50},
+    {label:'۵۰ تا ۷۵٪', value:75}, {label:'بیش از ۷۵٪', value:100}]},
+ {id:'b2', section:'بهره‌برداری مالی', type:'likert', text:'درآمدم در این حوزه طی یک سال گذشته رشد کرده.'},
+ {id:'b3', section:'بهره‌برداری مالی', type:'likert', text:'درآمدم با تلاشم تناسب داره.'},
+ {id:'b4', section:'بهره‌برداری مالی', type:'likert', text:'می‌تونستم از همین مهارت خیلی بیشتر درآمد داشته باشم.'},
+ {id:'d1', section:'گلوگاه — دیده‌شدن', type:'likert', text:'بیرون از دایره آشناها کسی کارم رو نمی‌شناسه.'},
+ {id:'d2', section:'گلوگاه — دیده‌شدن', type:'likert', text:'صفحه یا پورتفولیوی فعالی از کارم ندارم.'},
+ {id:'q1', section:'گلوگاه — بسته‌بندی و قیمت', type:'likert', text:'نمی‌تونم دقیق بگم «محصول یا خدمتم» چیه.'},
+ {id:'q2', section:'گلوگاه — بسته‌بندی و قیمت', type:'likert', text:'معمولاً قیمتی می‌دم که کمتر از چیزی می‌دونم می‌ارزه.'},
+ {id:'f1', section:'گلوگاه — کانال فروش', type:'likert', text:'نمی‌دونم مشتری جدید رو کجا پیدا کنم.'},
+ {id:'f2', section:'گلوگاه — کانال فروش', type:'likert', text:'فکر مذاکره و فروش، معذبم می‌کنه.'},
+ {id:'z4', section:'گلوگاه — بازار', type:'likert', text:'محیط فعلی‌ام برای این مهارت پول خوبی پرداخت نمی‌کنه.'},
+ {id:'z5', section:'گلوگاه — بازار', type:'likert', text:'حس می‌کنم بازار فعلیم به این مهارت اشباع شده یا نیاز نداره.'},
+ {id:'p1', section:'گلوگاه — پراکندگی', type:'likert', text:'چیزهای زیادی شروع می‌کنم ولی کمتر تموم می‌کنم.'},
+ {id:'p2', section:'گلوگاه — پراکندگی', type:'likert', text:'حس می‌کنم انرژی‌ام بین کارهای زیاد پخش شده.'},
+ {id:'r1', section:'گلوگاه — به‌روز بودن', type:'likert', text:'یک ساله چیز جدیدی در حوزه‌ام یاد نگرفتم.'},
+ {id:'r2', section:'گلوگاه — به‌روز بودن', type:'likert', text:'نیاز بازار از مهارت فعلی‌ام جلوتر زده.'},
+ {id:'n1', section:'گلوگاه — ذهنی', type:'likert', text:'ته دلم حس می‌کنم بیشتر از این برام ممکن نیست.'},
+ {id:'n2', section:'گلوگاه — ذهنی', type:'likert', text:'از دیده‌شدن و قضاوت‌شدن می‌ترسم.'},
+ {id:'s1', section:'منابع', type:'choice', text:'چند ساعت مفید در روز برای رشد وقت داری؟', options:[
+    {label:'هیچ', value:0}, {label:'کمتر از ۱ ساعت', value:25}, {label:'۱ تا ۲ ساعت', value:50},
+    {label:'۲ تا ۴ ساعت', value:75}, {label:'بیش از ۴ ساعت', value:100}]},
+ {id:'s2', section:'منابع', type:'choice', text:'بدون درآمد، چند ماه دووم میاری؟', options:[
+    {label:'کمتر از ۱ ماه', value:0}, {label:'۱ تا ۳ ماه', value:33},
+    {label:'۳ تا ۶ ماه', value:66}, {label:'بیش از ۶ ماه', value:100}]},
+ {id:'s3', section:'منابع', type:'likert', text:'ابزار لازم (سیستم، اینترنت، فضای کار) رو دارم.'},
+ {id:'s4', section:'منابع', type:'likert', text:'در شبکه‌ام کسانی هستن که می‌تونن درِ جدید برام باز کنن.'},
+ {id:'k1', section:'ریسک و ترجیحات', type:'likert', text:'درآمد کم ولی قطعی رو به درآمد بیشتر ولی نامطمئن ترجیح می‌دم.'},
+ {id:'k2', section:'ریسک و ترجیحات', type:'likert', text:'حاضرم ثبات فعلی رو برای یه جهش بزرگ دوساله فدا کنم.'},
+ {id:'k3', section:'ریسک و ترجیحات', type:'likert', text:'تنهایی کار کردن رو به تیمی ترجیح می‌دم.'}
+];
+
+var QM = [
+ {id:'ei1', d:'EI', a:{p:'E',t:'دورهمی و جمع دوستان'}, b:{p:'I',t:'خلوت و تنها بودن در خونه'}, t:'بعد از یه هفته شلوغ، ترجیح می‌دم:'},
+ {id:'ei2', d:'EI', a:{p:'E',t:'خودم سرِ صحبت رو باز می‌کنم'}, b:{p:'I',t:'صبر می‌کنم دیگران سراغم بیان'}, t:'در مهمونی‌ها:'},
+ {id:'ei3', d:'EI', a:{p:'E',t:'با کسی بلند بلند حرف بزنم'}, b:{p:'I',t:'توی سرم تنها مرور کنم'}, t:'فکرم وقتی شفاف می‌شه که:'},
+ {id:'ei4', d:'EI', a:{p:'E',t:'شارژ می‌شم'}, b:{p:'I',t:'تخلیه می‌شم و تنهایی لازم دارم'}, t:'بعد از معاشرت زیاد:'},
+ {id:'ei5', d:'EI', a:{p:'E',t:'پرجنب‌وجوش و پر تعامل'}, b:{p:'I',t:'آرام و کم‌رفت‌وآمد'}, t:'محیط کاری دلخواهم:'},
+ {id:'ei6', d:'EI', a:{p:'E',t:'افراد زیاد، آشناهای سطحی‌تر'}, b:{p:'I',t:'افراد کم، رابطه‌های عمیق‌تر'}, t:'معمولاً:'},
+ {id:'sn1', d:'SN', a:{p:'S',t:'چیزهای واقعی و کاربردیِ امروز'}, b:{p:'N',t:'ایده‌ها و امکان‌های آینده'}, t:'بیشتر لذت می‌برم از:'},
+ {id:'sn2', d:'SN', a:{p:'S',t:'قدم‌به‌قدم با مثال عینی'}, b:{p:'N',t:'اول تصویر کلی، بعد جزئیات'}, t:'برای یادگیری ترجیح می‌دم:'},
+ {id:'sn3', d:'SN', a:{p:'S',t:'واقع‌بین و خاکی'}, b:{p:'N',t:'خیال‌پرداز و ایده‌باز'}, t:'آشناهام من رو این‌طوری توصیف می‌کنن:'},
+ {id:'sn4', d:'SN', a:{p:'S',t:'تجربه و چیزی که با چشم دیدم'}, b:{p:'N',t:'شم و حس درونی‌ام'}, t:'بیشتر اعتماد می‌کنم به:'},
+ {id:'sn5', d:'SN', a:{p:'S',t:'جزئیات و مثال واقعی'}, b:{p:'N',t:'کلیت و تشبیه'}, t:'موقع توضیح دادن:'},
+ {id:'sn6', d:'SN', a:{p:'S',t:'روش موجود رو بهتر و دقیق‌تر کنم'}, b:{p:'N',t:'یه روش کاملاً جدید بسازم'}, t:'جذاب‌تر برام اینه:'},
+ {id:'tf1', d:'TF', a:{p:'T',t:'منطق و سود و زیان'}, b:{p:'F',t:'احساس و نیاز آدم‌های درگیر'}, t:'در تصمیم‌گیری، اولویت با:'},
+ {id:'tf2', d:'TF', a:{p:'T',t:'اول راه‌حل می‌دم'}, b:{p:'F',t:'اول گوش می‌دم و همدلی می‌کنم'}, t:'وقتی دوستی مشکل داره:'},
+ {id:'tf3', d:'TF', a:{p:'T',t:'عادله و صریح'}, b:{p:'F',t:'مهربونه و همراه'}, t:'ترجیح می‌دم به عنوان کسی شناخته بشم که:'},
+ {id:'tf4', d:'TF', a:{p:'T',t:'به جواب درست برسیم'}, b:{p:'F',t:'رابطه‌ها سالم بمونه'}, t:'در بحث، برام مهم‌تره که:'},
+ {id:'tf5', d:'TF', a:{p:'T',t:'مستقیم و رک، حتی تلخ'}, b:{p:'F',t:'ملایم و با رعایت حالم'}, t:'بازخورد دلخواهم:'},
+ {id:'tf6', d:'TF', a:{p:'T',t:'سرم حرف آخر رو می‌زنه'}, b:{p:'F',t:'دلم'}, t:'در تصمیم‌های مهم:'},
+ {id:'jp1', d:'JP', a:{p:'J',t:'برنامه و مهلت مشخص'}, b:{p:'P',t:'باز و منعطف، لحظه‌ای'}, t:'کار رو این‌طوری پیش می‌برم:'},
+ {id:'jp2', d:'JP', a:{p:'J',t:'مرتب و منظم'}, b:{p:'P',t:'به‌هم‌ریخته، ولی خودم می‌دونم چی کجاست'}, t:'میز و فایل‌هام:'},
+ {id:'jp3', d:'JP', a:{p:'J',t:'اول نقشه کامل'}, b:{p:'P',t:'شروع می‌کنم و بین راه شکل می‌دم'}, t:'شروع پروژه:'},
+ {id:'jp4', d:'JP', a:{p:'J',t:'زودتر می‌بندم'}, b:{p:'P',t:'لحظه‌های آخر، با اوج تمرکز'}, t:'مهلت‌ها رو:'},
+ {id:'jp5', d:'JP', a:{p:'J',t:'همه‌چی قطعی و تصمیم‌گرفته'}, b:{p:'P',t:'گزینه‌ها باز بمونن'}, t:'وقتی آروم‌ترم که:'},
+ {id:'jp6', d:'JP', a:{p:'J',t:'روتین و عادت‌های منظم'}, b:{p:'P',t:'تنوع و خودانگیختگی'}, t:'در روزمره:'}
+];
+
+var QD = [
+ {id:'D1', section:'DISC — پیش‌رانی', type:'likert', text:'وقتی مانع می‌بینم، بدون معطلی برای شرایط کامل، عمل می‌کنم.'},
+ {id:'D2', section:'DISC — پیش‌رانی', type:'likert', text:'ترجیح می‌دم خودم تصمیم بگیرم تا منتظر اجماع بمونم.'},
+ {id:'D3', section:'DISC — پیش‌رانی', type:'likert', text:'رقابت و هدف‌های بزرگ روشنم می‌کنه.'},
+ {id:'D4', section:'DISC — پیش‌رانی', type:'likert', text:'حرفم رو رک می‌زنم، حتی اگه به قیمت سنگینی تموم بشه.'},
+ {id:'I1', section:'DISC — تأثیرگذاری', type:'likert', text:'در برخورد اول، آدم‌ها رو با خودم همراه می‌کنم.'},
+ {id:'I2', section:'DISC — تأثیرگذاری', type:'likert', text:'وقتی ایده‌ای رو با شور تعریف می‌کنم، دیگران هم شارژ می‌شن.'},
+ {id:'I3', section:'DISC — تأثیرگذاری', type:'likert', text:'ارتباط با آدم‌های جدید برام راحت‌تر از کار عمیق تنهایه.'},
+ {id:'I4', section:'DISC — تأثیرگذاری', type:'likert', text:'متقاعدسازی و مذاکره برام مثل بازیه، نه فشار.'},
+ {id:'S1', section:'DISC — ثبات', type:'likert', text:'در محیط آرام و قابل‌پیش‌بینی بهترین عملکردم رو دارم.'},
+ {id:'S2', section:'DISC — ثبات', type:'likert', text:'معمولاً منم که تیم رو کنار هم نگه می‌دارم و تنش رو کم می‌کنم.'},
+ {id:'S3', section:'DISC — ثبات', type:'likert', text:'تا یه کار کامل تموم نشه، سراغ بعدی نمی‌رم.'},
+ {id:'S4', section:'DISC — ثبات', type:'likert', text:'تغییر ناگهانی بیشتر اذیتم می‌کنه تا هیجان‌زده.'},
+ {id:'C1', section:'DISC — دقت', type:'likert', text:'قبل از شروع، همه داده‌ها و جزئیات رو جمع می‌کنم.'},
+ {id:'C2', section:'DISC — دقت', type:'likert', text:'کیفیت برام مهم‌تر از سرعته.'},
+ {id:'C3', section:'DISC — دقت', type:'likert', text:'چارچوب و استاندارد دقیق رو رعایت می‌کنم.'},
+ {id:'C4', section:'DISC — دقت', type:'likert', text:'خطا، چه مال خودم چه دیگران، تا مدت‌ها درگیرم می‌کنه.'}
+];
+
+var QT = [
+ {id:'t1', section:'حرف آخر', type:'text', req:1, text:'در دو‌سه جمله: چه کار می‌کنی و در چی خوبی؟'},
+ {id:'t2', section:'حرف آخر', type:'text', req:1, text:'به زبان خودت، بزرگ‌ترین مانع درآمد بیشتر چیه؟'},
+ {id:'t3', section:'حرف آخر', type:'text', req:0, text:'(اختیاری) یک سال بعد، روز کاری ایده‌آلت رو توصیف کن.'}
+];
+
+var QUESTIONS = Q1.concat(QM.map(function(q){ q.type='mbti'; q.section='شخصیت — MBTI'; q.text=q.t; return q; }), QD, QT);
+var LIKERT = ['کاملاً مخالفم','مخالفم','نظری ندارم','موافقم','کاملاً موافقم'];
+var answers = {};
+var trail = [];
+
+function toast(msg){
+    var t = document.createElement('div');
+    t.textContent = msg;
+    t.style.cssText = 'position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#0e2440;color:#f2b632;padding:12px 26px;border-radius:50px;border:1px solid rgba(242,182,50,.5);z-index:2000;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.4);transition:opacity .4s;font-family:inherit';
+    document.body.appendChild(t);
+    setTimeout(function(){ t.style.opacity='0'; }, 2200);
+    setTimeout(function(){ t.remove(); }, 2700);
+}
+document.addEventListener('click', function(e){
+    var el = e.target.closest ? e.target.closest('a.soon') : null;
+    if (el){ e.preventDefault(); toast('🚧 این بخش در فازهای بعدی ساخته می‌شه.'); }
+});
+window.togglePanel = function(){
+    document.getElementById('mPanel').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+    document.getElementById('burger').classList.toggle('active');
+};
+window.toggleSub = function(btn){
+    var sub = btn.nextElementSibling;
+    if (sub) sub.classList.toggle('open');
+};
+window.toggleSearch = function(){
+    document.getElementById('searchRow').classList.toggle('open');
+};
+window.closeAnnounce = function(){
+    document.getElementById('announceBar').style.display = 'none';
+    document.getElementById('announceForm').classList.remove('open');
+};
+window.openAnForm = function(){
+    document.getElementById('announceForm').classList.toggle('open');
+    if(document.getElementById('announceForm').classList.contains('open'))document.getElementById('anName').focus();
+};
+window.submitAnForm = function(){
+    var name = document.getElementById('anName').value.trim();
+    var mobile = document.getElementById('anMobile').value.trim();
+    if(!name){toast('لطفاً نامت رو بنویس.');return;}
+    if(!/^09\d{9}$/.test(mobile)){toast('شماره موبایل معتبر وارد کن (مثل 09120281178).');return;}
+    window.location.href='azmoon.html';
+};
+window.addEventListener('scroll', function(){
+    var y = window.pageYOffset || 0;
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('prog').style.width = (h > 0 ? (y/h)*100 : 0) + '%';
+    document.getElementById('header').classList.toggle('scrolled', y > 60);
+    document.getElementById('toTop').classList.toggle('show', y > 500);
+}, {passive:true});
+
+function startQuiz(){
+    document.getElementById('introCard').style.display='none';
+    document.getElementById('quizCard').style.display='block';
+    document.getElementById('progressWrap').style.display='block';
+    renderQuestion('z1');
+}
+
+function visibleQuestions(){
+    return QUESTIONS.filter(function(q){
+        if (!q.showIf) return true;
+        return answers[q.showIf.field] === q.showIf.equals;
+    });
+}
+
+function renderQuestion(qid){
+    var list = visibleQuestions();
+    var idx = -1;
+    for (var i=0;i<list.length;i++) if (list[i].id===qid) idx=i;
+    var q = list[idx];
+    var pct = Math.round(((idx+1)/list.length)*100);
+    document.getElementById('progressText').textContent = 'سوال ' + (idx+1) + ' از ' + list.length;
+    document.getElementById('progressPct').textContent = pct + '%';
+    document.getElementById('progressFill').style.width = pct + '%';
+
+    var html = '<div class="q-section">' + q.section + '</div><div class="q-text">' + q.text + '</div>';
+
+    if (q.type === 'likert') {
+        html += '<div class="options likert">';
+        for (var v=1; v<=5; v++) {
+            var sel = (answers[q.id]===v) ? ' selected' : '';
+            html += '<button class="opt'+sel+'" onclick="answer(\''+q.id+'\','+v+')">'+LIKERT[v-1]+'</button>';
+        }
+        html += '</div>';
+    } else if (q.type === 'choice') {
+        html += '<div class="options">';
+        for (var o=0;o<q.options.length;o++) {
+            var op = q.options[o];
+            var sel2 = (answers[q.id]===op.value) ? ' selected' : '';
+            html += '<button class="opt'+sel2+'" onclick="answer(\''+q.id+'\','+JSON.stringify(op.value).replace(/"/g,'&quot;')+')">'+op.label+'</button>';
+        }
+        html += '</div>';
+    } else if (q.type === 'mbti') {
+        html += '<div class="options">';
+        html += '<button class="opt'+(answers[q.id]===q.a.p?' selected':'')+'" onclick="answer(\''+q.id+'\',\''+q.a.p+'\')">'+q.a.t+'</button>';
+        html += '<button class="opt'+(answers[q.id]===q.b.p?' selected':'')+'" onclick="answer(\''+q.id+'\',\''+q.b.p+'\')">'+q.b.t+'</button>';
+        html += '</div>';
+    } else {
+        html += '<textarea id="ta_'+q.id+'" class="ta" rows="3" placeholder="این‌جا بنویس...">'+(answers[q.id]||'')+'</textarea>';
+        html += '<button class="btn-gold" style="width:100%;margin-top:14px" onclick="answerText(\''+q.id+'\','+(q.req?1:0)+')">ثبت و ادامه</button>';
+    }
+
+    if (idx > 0) html += '<button class="back-btn" onclick="goBack()">→ سوال قبلی</button>';
+    document.getElementById('quizCard').innerHTML = html;
+}
+
+function nextAfter(id){
+    var list = visibleQuestions();
+    var idx = -1;
+    for (var i=0;i<list.length;i++) if (list[i].id===id) idx=i;
+    trail.push(id);
+    if (idx + 1 < list.length) renderQuestion(list[idx+1].id);
+    else startAnalysis();
+}
+function answer(id, value){ answers[id] = value; nextAfter(id); }
+function answerText(id, req){
+    var val = document.getElementById('ta_'+id).value.trim();
+    if (req && !val){ toast('لطفاً حداقل یک جمله بنویس.'); return; }
+    answers[id] = val;
+    nextAfter(id);
+}
+function goBack(){
+    if (trail.length < 2) return;
+    trail.pop();
+    renderQuestion(trail[trail.length-1]);
+}
+
+function L(id){ return (answers[id]-1)*25; }
+
+function computeMBTI(){
+    var count = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+    QM.forEach(function(q){ var a = answers[q.id]; if (a) count[a]++; });
+    function pick(x,y){ return count[x]>=count[y] ? x : y; }
+    var type = pick('E','I')+pick('S','N')+pick('T','F')+pick('J','P');
+    function strength(x,y){ var d=Math.abs(count[x]-count[y]); return d>=5?'واضح':(d>=3?'متوسط':'خفیف'); }
+    var temperament = (type[1]==='N') ? (type[2]==='T'?'NT':'NF') : (type[3]==='J'?'SJ':'SP');
+    return { type:type, temperament:temperament,
+        dich:{ EI:count.E+'-'+count.I+' ('+strength('E','I')+')', SN:count.S+'-'+count.N+' ('+strength('S','N')+')',
+               TF:count.T+'-'+count.F+' ('+strength('T','F')+')', JP:count.J+'-'+count.P+' ('+strength('J','P')+')' } };
+}
+
+function computeDISC(){
+    var s = {
+        D:(L('D1')+L('D2')+L('D3')+L('D4'))/4,
+        I:(L('I1')+L('I2')+L('I3')+L('I4'))/4,
+        S:(L('S1')+L('S2')+L('S3')+L('S4'))/4,
+        C:(L('C1')+L('C2')+L('C3')+L('C4'))/4
+    };
+    var order = Object.keys(s).sort(function(a,b){return s[b]-s[a];});
+    return { scores:s, style: order[0]+order[1] };
+}
+
+function computeProfile(){
+    var skill = 0.3*L('m1')+0.2*L('m2')+0.25*L('m3')+0.15*answers.m4+0.1*L('m5');
+    var monet = 0.6*answers.b1+0.2*L('b2')+0.2*L('b3');
+    var gap = 0.6*L('b4')+0.4*(100-L('b3'));
+    var bottlenecks = {
+        visibility:(L('d1')+L('d2'))/2, packaging:(L('q1')+L('q2'))/2,
+        channel:(L('f1')+L('f2'))/2, market:(L('z4')+L('z5'))/2,
+        scatter:(L('p1')+L('p2'))/2, outdated:(L('r1')+L('r2'))/2,
+        mindset:(L('n1')+L('n2'))/2
+    };
+    var keys = Object.keys(bottlenecks).sort(function(a,b){return bottlenecks[b]-bottlenecks[a];});
+    var highSkill = skill>=60, highMonet = monet>=60;
+    var archetype;
+    if (highSkill && !highMonet) archetype = (answers.z1==='employed')?'tired_employee':'hidden_expert';
+    else if (highSkill && highMonet) archetype = (bottlenecks.scatter>=60||bottlenecks.channel>=60)?'scattered_freelancer':'scaler';
+    else if (!highSkill && highMonet) archetype = 'wave_rider';
+    else archetype = 'starter';
+
+    var mbti = computeMBTI(), disc = computeDISC();
+
+    return {
+        axes:{ skill:Math.round(skill), monet:Math.round(monet), gap:Math.round(gap) },
+        bottlenecks:bottlenecks, primary:keys[0], secondary:keys[1],
+        confidence:bottlenecks[keys[0]]-bottlenecks[keys[1]],
+        archetype:archetype,
+        flags:{ financial_pressure:(answers.s2===0&&monet<50), coach_required:(bottlenecks.mindset>=70) },
+        resources:{ time:answers.s1, runway:answers.s2, tools:L('s3'), network:L('s4') },
+        prefs:{ risk_tolerance:Math.round(((100-L('k1'))+L('k2'))/2), solo:L('k3') },
+        mbti:mbti, disc:disc,
+        style_constraints:{
+            directness: mbti.type[2]==='T'?'صریح':'ملایم',
+            empathy_first: mbti.type[2]==='F',
+            deadline_mode: mbti.type[3]==='J'?'سررسید قطعی':'پنجره انعطاف',
+            channel_bias: (mbti.type[0]==='E'&&disc.scores.I>=60)?'حضوری':((mbti.type[0]==='I'&&disc.scores.I<60)?'محتوامحور':'ترکیبی'),
+            pace: disc.scores.D>=60?'تند':(disc.scores.S>=60?'پلکانی':'متعارف')
+        },
+        narrative:{ t1:answers.t1||'', t2:answers.t2||'', t3:answers.t3||'' }
+    };
+}
+
+function startAnalysis(){
+    document.getElementById('progressWrap').style.display='none';
+    var steps = ['🧠 در حال تحلیل MBTI...', '📊 محاسبه سبک DISC...', '🔍 شناسایی گلوگاه اصلی...', '🎯 ساخت نقشه راه اختصاصی...'];
+    var stepIdx = 0;
+    document.getElementById('quizCard').innerHTML = '<div style="text-align:center"><div class="loader2"></div><p class="loader-text">در حال تحلیل پاسخ‌ها و ساخت گزارش اختصاصی تو...</p><p class="loader-step" id="loaderStep">'+steps[0]+'</p></div>';
+    var t = setInterval(function(){
+        stepIdx++;
+        if (stepIdx >= steps.length) clearInterval(t);
+        else document.getElementById('loaderStep').textContent = steps[stepIdx];
+    }, 800);
+    
+    var profile = computeProfile();
+    if (AGENT_URL) {
+        fetch(AGENT_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(profile)})
+            .then(function(r){ return r.json(); })
+            .then(function(data){ setTimeout(function(){ showReport(profile, data); }, 3200); })
+            .catch(function(){ setTimeout(function(){ showReport(profile, null); }, 3200); });
+    } else {
+        setTimeout(function(){ showReport(profile, null); }, 3200);
+    }
+}
+
+var ARCHETYPES = {
+    hidden_expert:{e:'🥷', t:'کارشناس پنهان', h:'تو مهارتت رو داری؛ پلِ دیده‌شدن جا افتاده.'},
+    tired_employee:{e:'🧑‍💼', t:'کارمند خسته', h:'مهارت تو بیشتر از چیزی که سازمانت پرداخت می‌کنه می‌ارزه.'},
+    scattered_freelancer:{e:'🌀', t:'فریلنسر پراکنده', h:'همیشه شلوغی؛ حالا وقتِ تمرکزه.'},
+    scaler:{e:'🚀', t:'در آستانه مقیاس', h:'به نقطه خوبی رسیدی؛ مرحله بعد بزرگ‌تره.'},
+    starter:{e:'🌱', t:'شروع‌کننده', h:'مسیر جلوت بازه؛ با تمرکز شروع می‌کنیم.'},
+    wave_rider:{e:'🌊', t:'سوار بر موج', h:'درآمدت فعلاً از مهارت پشتیبانی نمی‌شه؛ ماندگارش می‌کنیم.'}
+};
+var BOTTLENECK_NAMES = { visibility:'دیده‌نشدن', packaging:'بسته‌بندی و قیمت‌گذاری', channel:'کانال فروش', market:'بازار اشتباه', scatter:'پراکندگی', outdated:'به‌روز نبودن', mindset:'ذهنی' };
+var PLAYBOOKS = {
+    visibility:['سه نمونه‌کار برترت رو انتخاب کن و در یک صفحه منتشر کن.','این هفته یک پست درباره تجربه کاری‌ات در یک پلتفرم منتشر کن.','به پنج نفر از آشناها بگو آماده پروژه گرفتن هستی.'],
+    packaging:['خدمتت رو در یک جمله بنویس: «من X را برای Y انجام می‌دهم.»','سه بسته قیمتی مشخص تعریف کن.','قیمت پیشنهاد بعدی‌ات رو ۲۰٪ بالاتر بگو.'],
+    channel:['فقط یک کانال که مشتری‌هات اونجان رو انتخاب کن.','این هفته سه پیام یا پیشنهاد بفرست.','از هر مشتری، درخواست ارجاع کن.'],
+    market:['دو بازار که این مهارت رو بیشتر پول می‌دن تحقیق کن.','با یک فرد فعال در بازار هدف گفت‌وگو کن.','نمونه‌کارت رو برای بازار جدید بازسازی کن.'],
+    scatter:['همه چیزهایی که شروع کردی رو لیست کن.','فقط یک مورد رو نگه دار.','سی روز به هر چیز جدید «نه» بگو.'],
+    outdated:['مهم‌ترین مهارت جدید بازارت رو پیدا کن.','روزی ۳۰ دقیقه یادگیریش کن.','یک نمونه‌کار کوچک باهاش بساز.'],
+    mindset:['سه دستاوردی که بهشون افتخار می‌کنی رو بنویس.','با یک فرد قابل‌اعتماد درباره اهدافت حرف بزن.','در اولین جلسه کوچینگ، درباره سدهای درونی صحبت کن.']
+};
+
+function animateBar(el, pct){
+    setTimeout(function(){ el.style.width = pct + '%'; }, 100);
+}
+
+function showReport(p, agent){
+    var a = ARCHETYPES[p.archetype];
+    var html = '<div class="rep-emoji">'+a.e+'</div><div class="rep-title">'+a.t+'</div>' +
+        '<div class="rep-headline">'+(agent && agent.headline ? agent.headline : a.h)+'</div>';
+
+    if (p.flags.financial_pressure) html += '<div class="flag-note">⚡ فشار مالی داری؛ برنامه‌ات رو با «برد سریع» شروع می‌کنیم.</div>';
+    if (p.flags.coach_required) html += '<div class="flag-note">🤝 پیشنهاد می‌کنیم یک جلسه کوچینگ انسانی برای بخش ذهنی داشته باشی.</div>';
+
+    if (agent && agent.self_picture) {
+        html += '<div class="rep-block"><h4>🪞 تصویر تو</h4><p class="txt">'+agent.self_picture+'</p></div>';
+    }
+    if (agent && agent.bottleneck_story) {
+        html += '<div class="rep-block"><h4>🔍 چرا الان این‌جایی؟</h4><p class="txt">'+agent.bottleneck_story+'</p></div>';
+    }
+
+    html += '<div class="rep-block"><h4>📊 نمای کلی تو</h4>' +
+        '<div class="bar-row"><div class="bar-label"><span>سطح مهارت</span><b>'+p.axes.skill+'٪</b></div><div class="bar"><div id="barSkill" style="width:0%"></div></div></div>' +
+        '<div class="bar-row"><div class="bar-label"><span>بهره‌برداری مالی</span><b>'+p.axes.monet+'٪</b></div><div class="bar"><div id="barMonet" style="width:0%"></div></div></div>' +
+        '<div class="bar-row"><div class="bar-label"><span>فشار شکاف</span><b>'+p.axes.gap+'٪</b></div><div class="bar"><div id="barGap" style="width:0%"></div></div></div></div>';
+
+    html += '<div class="rep-block"><h4>🧠 شخصیت و سبک رفتار تو</h4><div class="type-row">' +
+        '<span class="type-chip">MBTI: '+p.mbti.type+'</span>' +
+        '<span class="type-chip">مزاج: '+p.mbti.temperament+'</span>' +
+        '<span class="type-chip">DISC: '+p.disc.style+'</span></div>' +
+        '<div class="step">انرژی: '+p.mbti.dich.EI+'</div><div class="step">دریافت اطلاعات: '+p.mbti.dich.SN+'</div>' +
+        '<div class="step">تصمیم‌گیری: '+p.mbti.dich.TF+'</div><div class="step">سبک زندگی: '+p.mbti.dich.JP+'</div>' +
+        '<div class="step">سبک برنامه تو: '+p.style_constraints.deadline_mode+' | کانال پیشنهادی: '+p.style_constraints.channel_bias+' | ریتم: '+p.style_constraints.pace+'</div></div>';
+
+    html += '<div class="rep-block"><h4>🔍 گلوگاه اصلی: '+BOTTLENECK_NAMES[p.primary]+'</h4>' +
+        '<div class="step">گلوگاه فرعی: '+BOTTLENECK_NAMES[p.secondary]+'</div>' +
+        (p.confidence < 10 ? '<div class="step">ℹ️ دو گلوگاه به هم نزدیکن؛ در مشاوره دقیق‌تر بررسی می‌کنیم.</div>' : '') + '</div>';
+
+    if (agent && agent.steps && agent.steps.length) {
+        html += '<div class="rep-block"><h4>🎯 قدم‌های اول تو (از ایجنت)</h4>';
+        agent.steps.forEach(function(s,i){ html += '<div class="step">'+(i+1)+'. '+s+'</div>'; });
+        html += '</div>';
+    } else {
+        html += '<div class="rep-block"><h4>🎯 سه قدم اول تو</h4>';
+        PLAYBOOKS[p.primary].forEach(function(s,i){ html += '<div class="step">'+(i+1)+'. '+s+'</div>'; });
+        html += '</div>';
+    }
+
+    html += '<div class="rep-block"><h4>➕ قدم بعدی</h4>' +
+        '<div class="next-box"><button class="next-gold" onclick="openConsult()">📞 تنظیم مشاوره تلفنی برای بررسی دقیق‌تر</button>' +
+        '<a class="next-line" href="index.html">برگشت به صفحه اصلی</a></div>' +
+        '<div class="consult-form" id="consultForm">' +
+        '<input type="text" id="cName" placeholder="نام و نام خانوادگی">' +
+        '<input type="tel" id="cMobile" placeholder="شماره موبایل">' +
+        '<select id="cTime"><option value="">زمان ترجیحی تماس</option><option>صبح (۹ تا ۱۲)</option><option>ظهر (۱۲ تا ۱۷)</option><option>عصر (۱۷ تا ۲۱)</option></select>' +
+        '<button class="btn-gold" style="width:100%;padding:12px" onclick="submitConsult()">ثبت درخواست مشاوره</button></div>' +
+        '<div class="consult-ok" id="consultOk">✅ درخواست مشاوره‌ات ثبت شد؛ در زمان انتخابی باهات تماس می‌گیریم.</div></div>';
+
+    var rc = document.getElementById('reportCard');
+    rc.innerHTML = html;
+    rc.style.display = 'block';
+    document.getElementById('quizCard').style.display = 'none';
+    window.scrollTo({top:0, behavior:'smooth'});
+    
+    setTimeout(function(){
+        animateBar(document.getElementById('barSkill'), p.axes.skill);
+        animateBar(document.getElementById('barMonet'), p.axes.monet);
+        animateBar(document.getElementById('barGap'), p.axes.gap);
+    }, 300);
+}
+
+function openConsult(){
+    document.getElementById('consultForm').classList.toggle('open');
+}
+function submitConsult(){
+    var name = document.getElementById('cName').value.trim();
+    var mobile = document.getElementById('cMobile').value.trim();
+    if (!name){ toast('لطفاً نامت رو بنویس.'); return; }
+    if (!/^09\d{9}$/.test(mobile)){ toast('شماره موبایل معتبر وارد کن (مثل 09120281178).'); return; }
+    document.getElementById('consultForm').classList.remove('open');
+    document.getElementById('consultOk').style.display = 'block';
+}
+
+try{ document.getElementById('cpyYear').textContent = new Intl.DateTimeFormat('fa-IR',{year:'numeric'}).format(new Date()); }catch(e){}
+</script>
+</body>
+</html>
