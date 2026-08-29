@@ -1,0 +1,12 @@
+@import url('https://fonts.cdnfonts.com/css/dana');
+
+:root{
+  --navy:#0a1a2f; --navy2:#0e2440; --gold:#f2b632;
+  --gold-soft:rgba(242,182,50,.12); --muted:#94a3b8;
+  --line:#1e3a5f; --grad-gold:linear-gradient(135deg,#f7c948,#e0a416);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Dana','Segoe UI',Tahoma,sans-serif;background:var(--navy);color:#e2e8f0;line-height:1.8}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
