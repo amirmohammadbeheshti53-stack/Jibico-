@@ -3,6 +3,8 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import QuizPage from './pages/QuizPage'
+import Dashboard from './pages/Dashboard'
+import NotFound from './pages/NotFound'
 import './App.css'
 
 function App(){
@@ -12,6 +14,8 @@ function App(){
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/quiz" element={<QuizPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </BrowserRouter>

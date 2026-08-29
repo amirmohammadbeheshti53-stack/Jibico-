@@ -45,7 +45,7 @@ function Header() {
             <div className="has-drop">
               <a href="#account">حساب کاربری من <span className="caret">▼</span></a>
               <div className="drop">
-                <a href="#dash">پیشخوان من</a>
+                <Link to="/dashboard">پیشخوان من</Link>
                 <a href="#license">لایسنس‌های من</a>
                 <a href="#orders">سفارش‌ها</a>
                 <a href="#track">پیگیری سفارش</a>
@@ -89,7 +89,7 @@ function Header() {
           <button className="close-x" onClick={() => setMenuOpen(false)}>✕</button>
           <nav className="m-menu">
             <Link to="/">صفحه اصلی</Link>
-            <a href="#account">حساب کاربری من</a>
+            <Link to="/dashboard">پیشخوان من</Link>
             <a href="#articles">مقالات</a>
             <a href="#videos">ویدیوهای آموزشی</a>
             <a href="#shop">فروشگاه</a>

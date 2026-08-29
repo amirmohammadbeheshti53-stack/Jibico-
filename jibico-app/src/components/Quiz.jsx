@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { QUESTIONS, LIKERT } from '../data/questions'
 import { computeProfile, ARCHETYPES, BOTTLENECK_NAMES, PLAYBOOKS } from '../utils/score'
@@ -40,6 +40,12 @@ function Quiz() {
     if(!/^09\d{9}$/.test(mobile)){ alert('شماره موبایل معتبر وارد کن.'); return }
     setConsultOk(true)
   }
+
+  useEffect(()=>{
+    if(finished){
+      try{ localStorage.setItem('jibico_report', JSON.stringify(computeProfile(answers))) }catch(e){}
+    }
+  },[finished])
 
   /* ---------- صفحه شروع ---------- */
   if(!started){
