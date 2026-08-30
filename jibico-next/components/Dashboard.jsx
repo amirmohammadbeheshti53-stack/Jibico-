@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ARCHETYPES, BOTTLENECK_NAMES, PLAYBOOKS } from '../utils/score'
+import { api } from '../lib/api'
 import './Dashboard.css'
 
 const TABS = [
@@ -32,7 +33,6 @@ export default function Dashboard(){
   const [trackCode, setTrackCode] = useState('')
   const [trackMsg, setTrackMsg] = useState(null)
 
-  /* خواندن localStorage فقط بعد از لود شدن (جلوگیری از Hydration error) */
   useEffect(()=>{
     try{
       const p = JSON.parse(localStorage.getItem('jibico_profile')||'null')
@@ -48,6 +48,7 @@ export default function Dashboard(){
     if(!/^09\d{9}$/.test(pMobile.trim())){ alert('شماره موبایل معتبر وارد کن.'); return }
     const p = { name:pName.trim(), mobile:pMobile.trim() }
     localStorage.setItem('jibico_profile', JSON.stringify(p))
+    api('save-profile.php', p)
     setProfile(p)
     alert('✅ پروفایل ذخیره شد.')
   }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Hero from '../components/Hero'
+import { api } from '../lib/api'
 import '../components/Home.css'
 
 const toFa = n => String(n).padStart(2,'0').replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d])
@@ -58,8 +59,23 @@ export default function Home(){
     return ()=>clearInterval(t)
   },[])
 
-  function submitFree(e){
+  async function submitFree(e){
     e.preventDefault()
+    const name = (document.getElementById('fName')?.value || '').trim()
+    const mobile = (document.getElementById('fMobile')?.value || '').trim()
+    const job = (document.getElementById('fJob')?.value || '').trim()
+    const challenge = (document.getElementById('fChallenge')?.value || '').trim()
+    if(!name){ alert('لطفاً نام و نام خانوادگی رو بنویس.'); return }
+    if(!/^09\d{9}$/.test(mobile)){ alert('شماره موبایل معتبر وارد کن (مثل 09123456789).'); return }
+
+    /* ۱) پروفایل در مرورگر (تا آزمونِ پیشِ رو با اسم ثبت بشه) */
+    try{ localStorage.setItem('jibico_profile', JSON.stringify({ name, mobile })) }catch(err){}
+    /* ۲) پروفایل در سرور */
+    api('save-profile.php', { name, mobile })
+    /* ۳) لید کامل در سرور */
+    const r = await api('save-consult.php', { name, mobile, job, challenge })
+    if(!r || !r.ok){ alert('⚠️ خطا در ثبت اطلاعات؛ دوباره تلاش کن.'); return }
+
     setSubmitted(true)
     setTimeout(()=>router.push('/quiz'), 1800)
   }
@@ -128,10 +144,10 @@ export default function Home(){
               <div className="free-ok">✅ اطلاعات ثبت شد!<br/>در حال انتقال به صفحه آزمون...</div>
             ) : (
               <form className="free-form" onSubmit={submitFree}>
-                <input type="text" placeholder="نام و نام خانوادگی" required />
-                <input type="tel" placeholder="شماره موبایل" required />
-                <input type="text" placeholder="شغل فعلی شما چیست؟" />
-                <select defaultValue="">
+                <input id="fName" type="text" placeholder="نام و نام خانوادگی" />
+                <input id="fMobile" type="tel" placeholder="شماره موبایل" />
+                <input id="fJob" type="text" placeholder="شغل فعلی شما چیست؟" />
+                <select id="fChallenge" defaultValue="">
                   <option value="" disabled>بزرگ‌ترین چالش درآمدی شما چیست؟</option>
                   <option>درآمدم رشد نمی‌کند</option>
                   <option>نمی‌دانم چه شغلی مناسبم است</option>

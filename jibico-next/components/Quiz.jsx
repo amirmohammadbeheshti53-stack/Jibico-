@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { QUESTIONS, LIKERT } from '../data/questions'
 import { computeProfile, ARCHETYPES, BOTTLENECK_NAMES, PLAYBOOKS } from '../utils/score'
+import { api } from '../lib/api'
 import './Quiz.css'
 
 export default function Quiz() {
@@ -40,12 +41,28 @@ export default function Quiz() {
     const mobile = (document.getElementById('cMobile')?.value || '').trim()
     if(!name){ alert('لطفاً نامت رو بنویس.'); return }
     if(!/^09\d{9}$/.test(mobile)){ alert('شماره موبایل معتبر وارد کن.'); return }
+    api('save-consult.php', { name, mobile })
     setConsultOk(true)
   }
 
   useEffect(()=>{
     if(finished){
-      try{ localStorage.setItem('jibico_report', JSON.stringify(computeProfile(answers))) }catch(e){}
+      const p = computeProfile(answers)
+      try{ localStorage.setItem('jibico_report', JSON.stringify(p)) }catch(e){}
+      let prof = null
+      try{ prof = JSON.parse(localStorage.getItem('jibico_profile')||'null') }catch(e){}
+      api('save-report.php', {
+        name: prof?.name || null,
+        mobile: prof?.mobile || null,
+        archetype: p.archetype,
+        skill: p.skill,
+        monet: p.monet,
+        gap: p.gap,
+        mbti: p.mbti.type,
+        disc: p.disc.style,
+        bottleneck: p.primary,
+        full: p
+      })
     }
   },[finished])
 
