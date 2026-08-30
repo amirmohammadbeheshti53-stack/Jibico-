@@ -1,16 +1,36 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import './Header.css'
 
 export default function Header() {
+  const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false)
   const [showAnnounce, setShowAnnounce] = useState(true)
   const [showForm, setShowForm] = useState(false)
+  const [prog, setProg] = useState(0)
+
+  useEffect(()=>{
+    const onScroll=()=>{
+      const h = document.documentElement
+      setProg(h.scrollTop / (h.scrollHeight - h.clientHeight) * 100)
+    }
+    window.addEventListener('scroll', onScroll, {passive:true})
+    return ()=>window.removeEventListener('scroll', onScroll)
+  },[])
+
+  function logout(){
+    localStorage.removeItem('jibico_report')
+    localStorage.removeItem('jibico_profile')
+    router.push('/')
+  }
 
   return (
     <>
+      <div className="scroll-progress" style={{width: prog+'%'}}></div>
+
       {showAnnounce && (
         <div className="announce">
           <span className="an-text">🎁 <b>پیشنهاد هفته</b> مشاوره رایگان برای ۲۰ نفر اول</span>
@@ -48,11 +68,11 @@ export default function Header() {
               <a href="#account">حساب کاربری من <span className="caret">▼</span></a>
               <div className="drop">
                 <Link href="/dashboard">پیشخوان من</Link>
-                <a href="#license">لایسنس‌های من</a>
-                <a href="#orders">سفارش‌ها</a>
-                <a href="#track">پیگیری سفارش</a>
-                <a href="#profile">پروفایل</a>
-                <a href="#exit">خروج از سیستم</a>
+                <Link href="/dashboard?tab=licenses">لایسنس‌های من</Link>
+                <Link href="/dashboard?tab=orders">سفارش‌ها</Link>
+                <Link href="/dashboard?tab=track">پیگیری سفارش</Link>
+                <Link href="/dashboard?tab=profile">پروفایل</Link>
+                <a href="/" onClick={(e)=>{e.preventDefault(); logout()}}>خروج از سیستم</a>
               </div>
             </div>
 
@@ -92,6 +112,8 @@ export default function Header() {
           <nav className="m-menu">
             <Link href="/">صفحه اصلی</Link>
             <Link href="/dashboard">پیشخوان من</Link>
+            <Link href="/dashboard?tab=orders">سفارش‌ها</Link>
+            <Link href="/dashboard?tab=profile">پروفایل</Link>
             <a href="#articles">مقالات</a>
             <a href="#videos">ویدیوهای آموزشی</a>
             <a href="#shop">فروشگاه</a>

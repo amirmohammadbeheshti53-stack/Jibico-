@@ -1,0 +1,32 @@
+footer{background:var(--navy);color:#cfd8e3;border-top:1px solid var(--line);margin-top:60px}
+.footer-top{max-width:1150px;margin:0 auto;padding:60px 20px 40px;display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:40px}
+.f-col h4{color:var(--gold);font-size:16px;margin-bottom:18px;font-weight:800}
+.f-col .logo-box{display:flex;flex-direction:column;line-height:1.4}
+.f-col .logo{font-size:26px;font-weight:900;color:var(--gold)}
+.f-col .logo-tag{font-size:11px;color:#8fa3ba}
+.f-desc{font-size:13px;color:var(--muted);margin:14px 0 18px}
+.f-links{list-style:none}
+.f-links li{margin-bottom:10px}
+.f-links a{color:#9fb2c8;font-size:13px;transition:.2s;display:inline-block}
+.f-links a:hover{color:var(--gold);transform:translateX(-4px)}
+.f-contact{list-style:none}
+.f-contact li{display:flex;gap:10px;align-items:center;margin-bottom:14px;font-size:13px}
+.f-contact .c-ico{width:38px;height:38px;border:1px solid rgba(242,182,50,.4);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--gold-soft);flex-shrink:0}
+.f-contact a{color:#e2e8f0;font-weight:700}
+.f-contact a:hover{color:var(--gold)}
+.f-social{display:flex;gap:10px}
+.f-social a{width:40px;height:40px;border:1px solid #2a4a73;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#cfd8e3;transition:.3s}
+.f-social a:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-4px)}
+.f-social svg{width:18px;height:18px}
+.footer-bottom{max-width:1150px;margin:0 auto;border-top:1px solid var(--line);padding:22px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.fb-copy{font-size:12px;color:var(--muted)}
+.fb-copy b{color:var(--gold)}
+.fb-badges{display:flex;gap:10px}
+.badge-box{width:70px;height:70px;border:1px dashed #2a4a73;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);text-align:center;padding:4px}
+.float-ble{position:fixed;bottom:25px;right:25px;width:56px;height:56px;border-radius:50%;background:var(--grad-gold);color:var(--navy);display:flex;align-items:center;justify-content:center;z-index:1200;animation:pulse 2.4s infinite}
+.float-ble svg{width:26px;height:26px}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(242,182,50,.5)}50%{box-shadow:0 0 0 18px rgba(242,182,50,0)}}
+.to-top{position:fixed;bottom:25px;left:25px;width:50px;height:50px;border:none;border-radius:50%;background:var(--grad-gold);color:var(--navy);font-size:20px;font-weight:900;cursor:pointer;opacity:0;visibility:hidden;transition:.3s;z-index:1200}
+.to-top.show{opacity:1;visibility:visible}
+@media (max-width:980px){.footer-top{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.footer-top{grid-template-columns:1fr}.footer-bottom{justify-content:center;text-align:center}}
