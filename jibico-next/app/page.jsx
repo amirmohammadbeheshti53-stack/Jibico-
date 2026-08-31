@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -67,15 +67,10 @@ export default function Home(){
     const challenge = (document.getElementById('fChallenge')?.value || '').trim()
     if(!name){ alert('لطفاً نام و نام خانوادگی رو بنویس.'); return }
     if(!/^09\d{9}$/.test(mobile)){ alert('شماره موبایل معتبر وارد کن (مثل 09123456789).'); return }
-
-    /* ۱) پروفایل در مرورگر (تا آزمونِ پیشِ رو با اسم ثبت بشه) */
     try{ localStorage.setItem('jibico_profile', JSON.stringify({ name, mobile })) }catch(err){}
-    /* ۲) پروفایل در سرور */
     api('save-profile.php', { name, mobile })
-    /* ۳) لید کامل در سرور */
     const r = await api('save-consult.php', { name, mobile, job, challenge })
     if(!r || !r.ok){ alert('⚠️ خطا در ثبت اطلاعات؛ دوباره تلاش کن.'); return }
-
     setSubmitted(true)
     setTimeout(()=>router.push('/quiz'), 1800)
   }
@@ -182,7 +177,7 @@ export default function Home(){
         <p className="sec-desc">تازه‌ترین محتوای رایگان ما برای رشد درآمدت.</p>
         <div className="wrap art-grid">
           {ARTICLES.map((a,i)=>(
-            <a className="art" href="https://jibicoclub.ir/articles.html" target="_blank" rel="noreferrer" key={i}>
+            <a className="art" href="/articles" key={i}>
               <div className={'art-head '+a.cls}>{a.e}</div>
               <div className="art-body">
                 <span className="a-cat">{a.c}</span>
@@ -192,7 +187,7 @@ export default function Home(){
             </a>
           ))}
         </div>
-        <a className="all-btn" href="https://jibicoclub.ir/articles.html" target="_blank" rel="noreferrer">همه مقالات ←</a>
+        <a className="all-btn" href="/articles">همه مقالات ←</a>
       </section>
 
       <section className="lsec white">

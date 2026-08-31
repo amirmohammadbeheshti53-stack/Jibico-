@@ -1,9 +1,29 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import './Header.css'
+
+const SITE = 'https://jibicoclub.ir'
+
+const PAGES = [
+  {t:'صفحه اصلی', u:'/'},
+  {t:'آزمون رایگان تشخیص', u:'/quiz'},
+  {t:'پیشخوان من', u:'/dashboard'},
+  {t:'سفارش‌ها', u:'/dashboard?tab=orders'},
+  {t:'پیگیری سفارش', u:'/dashboard?tab=track'},
+  {t:'لایسنس‌های من', u:'/dashboard?tab=licenses'},
+  {t:'پروفایل', u:'/dashboard?tab=profile'},
+  {t:'مقالات', u:'/articles'},
+  {t:'ویدیوهای آموزشی', u:'/videos'},
+  {t:'محصولات آموزشی', u:'/products'},
+  {t:'آنلاین‌سازی کسب‌وکار', u:'/online'},
+  {t:'اشتراک‌ها', u:'/subs'},
+  {t:'CRM فروش', u:'/crm'},
+  {t:'پشتیبانی', u:'/support'},
+  {t:'جیبیکو چیست؟', u:'/about'},
+]
 
 export default function Header() {
   const router = useRouter()
@@ -11,6 +31,7 @@ export default function Header() {
   const [showAnnounce, setShowAnnounce] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [prog, setProg] = useState(0)
+  const [q, setQ] = useState('')
 
   useEffect(()=>{
     const onScroll=()=>{
@@ -25,6 +46,14 @@ export default function Header() {
     localStorage.removeItem('jibico_report')
     localStorage.removeItem('jibico_profile')
     router.push('/')
+  }
+
+  const results = q.trim().length > 1 ? PAGES.filter(p => p.t.includes(q.trim())) : []
+
+  function goSearch(r){
+    setQ('')
+    if(r.u.startsWith('http')) window.location.href = r.u
+    else router.push(r.u)
   }
 
   return (
@@ -58,7 +87,14 @@ export default function Header() {
             <svg className="s-mag" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
             </svg>
-            <input type="text" placeholder="🔍 جستجو در جیبیکو..." />
+            <input type="text" placeholder="🔍 جستجو در جیبیکو..." value={q} onChange={e=>setQ(e.target.value)} />
+            {q.trim().length > 1 && (
+              <div className="search-drop">
+                {results.length ? results.map((r,i)=>(
+                  <button key={i} onClick={()=>goSearch(r)}>{r.t}<span className="sd-badge">صفحه</span></button>
+                )) : <div className="sd-empty">نتیجه‌ای پیدا نشد</div>}
+              </div>
+            )}
           </div>
 
           <nav className="header-menu">
@@ -79,23 +115,23 @@ export default function Header() {
             <div className="has-drop">
               <a href="#learn">آموزش‌های رایگان <span className="caret">▼</span></a>
               <div className="drop">
-                <a href="#articles">مقالات</a>
-                <a href="#videos">ویدیوهای آموزشی</a>
+                <a href={'/articles'}>مقالات</a>
+                <a href={'/videos'}>ویدیوهای آموزشی</a>
               </div>
             </div>
 
             <div className="has-drop">
               <a href="#shop">فروشگاه <span className="caret">▼</span></a>
               <div className="drop">
-                <a href="#products">محصولات آموزشی</a>
-                <a href="#online">آنلاین‌سازی کسب‌وکار</a>
-                <a href="#subs">اشتراک‌ها</a>
-                <a href="#crm">CRM</a>
+                <a href={'/products'}>محصولات آموزشی</a>
+                <a href={'/online'}>آنلاین‌سازی کسب‌وکار</a>
+                <a href={'/subs'}>اشتراک‌ها</a>
+                <a href={'/crm'}>CRM</a>
               </div>
             </div>
 
-            <a href="#support">پشتیبانی</a>
-            <a href="#about">جیبیکو چیست؟</a>
+            <a href={'/support'}>پشتیبانی</a>
+            <a href={'/about'}>جیبیکو چیست؟</a>
             <a href="https://ble.ir/jibicoclub" target="_blank" rel="noreferrer" className="ble">کانال بله</a>
           </nav>
 
@@ -110,19 +146,21 @@ export default function Header() {
         <div className="m-panel">
           <button className="close-x" onClick={() => setMenuOpen(false)}>✕</button>
           <nav className="m-menu">
-            <Link href="/">صفحه اصلی</Link>
             <Link href="/dashboard">پیشخوان من</Link>
             <Link href="/dashboard?tab=orders">سفارش‌ها</Link>
+            <Link href="/dashboard?tab=track">پیگیری سفارش</Link>
             <Link href="/dashboard?tab=profile">پروفایل</Link>
-            <a href="#articles">مقالات</a>
-            <a href="#videos">ویدیوهای آموزشی</a>
-            <a href="#shop">فروشگاه</a>
-            <a href="#support">پشتیبانی</a>
-            <a href="#about">جیبیکو چیست؟</a>
+            <a href={'/articles'}>مقالات</a>
+            <a href={'/videos'}>ویدیوهای آموزشی</a>
+            <a href={'/products'}>فروشگاه</a>
+            <a href={'/support'}>پشتیبانی</a>
+            <a href={'/about'}>جیبیکو چیست؟</a>
             <a href="https://ble.ir/jibicoclub" target="_blank" rel="noreferrer" className="ble">کانال بله</a>
+            <a href="/" onClick={(e)=>{e.preventDefault(); logout()}} className="exit-m">خروج از سیستم</a>
           </nav>
         </div>
       )}
     </>
   )
 }
+

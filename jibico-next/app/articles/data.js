@@ -1,12 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>جیبیکو | مقالات آموزشی</title>
-<script>document.documentElement.classList.add('js');</script>
-<link href="https://fonts.cdnfonts.com/css/dana" rel="stylesheet">
-<style>
+﻿export const styles = `
 :root{--navy:#0a1a2f;--navy2:#0e2440;--gold:#f2b632;--gold-soft:rgba(242,182,50,.12);--muted:#94a3b8;--line:#1e3a5f;--grad-gold:linear-gradient(135deg,#f7c948,#e0a416)}
 *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
 body{font-family:'Dana','Segoe UI',Tahoma,sans-serif;background:var(--navy);color:#e2e8f0;line-height:1.9;overflow-x:hidden}
@@ -158,68 +150,22 @@ footer{background:var(--navy);color:#cfd8e3;border-top:1px solid var(--line)}
 .js .reveal{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.4,0,.2,1)}.js .reveal.on{opacity:1;transform:translateY(0)}
 @media (max-width:980px){.menu{display:none}.burger{display:flex}.topbar{display:flex}.search-console{display:none}.footer-top{grid-template-columns:1fr 1fr}.footer-bottom{justify-content:center;text-align:center}.toc ul{columns:1}}
 @media (max-width:640px){.announce{flex-wrap:nowrap;justify-content:flex-start;gap:8px;padding:9px 12px 9px 34px}.announce .an-text{flex:1;min-width:0;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.announce .an-text b{display:none}.an-btn{font-size:11px;padding:6px 14px}.announce .close-a{left:6px;width:22px;height:22px;font-size:14px}.announce-form input{width:100%}.footer-top{grid-template-columns:1fr}.art-body{padding:22px}}
-</style>
-</head>
-<body>
-<div id="prog"></div>
-
-<div class="announce" id="announceBar">
-    <span class="an-text">🎁 <b>پیشنهاد هفته</b> مشاوره رایگان برای ۲۰ نفر اول</span>
-    <button class="an-btn" onclick="openAnForm()">همین الان رزرو کن</button>
-    <button class="close-a" onclick="closeAnnounce()">✕</button>
-</div>
-<div class="announce-form" id="announceForm">
-    <input type="text" id="anName" placeholder="نام و نام خانوادگی">
-    <input type="tel" id="anMobile" placeholder="شماره موبایل">
-    <button onclick="submitAnForm()">ثبت و رفتن به آزمون ←</button>
-</div>
-
-<div class="topbar">
-    <div class="topbar-left">
-        <a href="#" class="soon" title="سبد خرید"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1.5"/><circle cx="19" cy="21" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6L23 7H6"/></svg></a>
-        <a href="tel:+989120281178" title="تماس"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg></a>
-    </div>
-    <div class="topbar-right"><button onclick="toggleSearch()" title="جستجو"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></button></div>
-</div>
-<div class="search-row" id="searchRow"><input type="text" id="searchInput" placeholder="🔍 جستجو در جیبیکو..." autocomplete="off"><div class="search-results" id="searchResults"></div></div>
-
-<header id="header">
-    <div class="wrap nav">
-        <a href="index.html" class="logo-box"><span class="logo">جیبیکو</span><span class="logo-tag">از استعداد تا درآمد</span></a>
-        <div class="search-console">
-            <svg class="s-mag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
-            <input type="text" id="dSearchInput" placeholder="جستجو در جیبیکو..." autocomplete="off">
-            <div class="search-results" id="dSearchResults"></div>
-        </div>
-        <ul class="menu">
-            <li><a href="index.html">صفحه اصلی</a></li>
-            <li class="has-drop"><a href="#">حساب کاربری من <span class="caret">▼</span></a>
-                <ul class="drop"><li><a href="#" class="soon">پیشخوان من</a></li><li><a href="#" class="soon">لایسنس‌های من</a></li><li><a href="#" class="soon">سفارش‌ها</a></li><li><a href="#" class="soon">پیگیری سفارش</a></li><li><a href="#" class="soon">پروفایل</a></li><li><a href="#" class="soon">خروج از سیستم</a></li></ul></li>
-            <li class="has-drop"><a href="#">آموزش‌های رایگان <span class="caret">▼</span></a>
-                <ul class="drop"><li><a href="articles.html" class="active-home">مقالات</a></li><li><a href="videos.html">ویدیوهای آموزشی</a></li></ul></li>
-            <li class="has-drop"><a href="shop.html">فروشگاه <span class="caret">▼</span></a>
-                <ul class="drop"><li><a href="products.html">محصولات آموزشی</a></li><li><a href="online.html">آنلاین‌سازی کسب‌وکار</a></li><li><a href="subs.html">اشتراک‌ها</a></li><li><a href="crm.html">CRM</a></li></ul></li>
-            <li><a href="support.html">پشتیبانی</a></li>
-            <li><a href="about.html">جیبیکو چیست؟</a></li>
-            <li class="ble"><a href="https://ble.ir/jibicoclub" target="_blank">کانال بله</a></li>
-        </ul>
-        <button class="burger" id="burger" onclick="togglePanel()"><span></span><span></span><span></span></button>
-    </div>
-</header>
+`;
+export const html = `
 <div class="overlay" id="overlay" onclick="togglePanel()"></div>
 <div class="m-panel" id="mPanel">
     <button class="close-x" onclick="togglePanel()">✕</button>
     <div class="m-search"><input type="text" id="mSearchInput" placeholder="🔍 جستجو در جیبیکو..." autocomplete="off"><div class="search-results" id="mSearchResults"></div></div>
     <ul class="m-menu">
-        <li><a href="index.html">صفحه اصلی</a></li>
+        <li><a href="/">صفحه اصلی</a></li>
         <li><button onclick="toggleSub(this)">حساب کاربری من <span class="caret">▼</span></button>
             <ul class="m-sub"><li><a href="#" class="soon">پیشخوان من</a></li><li><a href="#" class="soon">لایسنس‌های من</a></li><li><a href="#" class="soon">سفارش‌ها</a></li><li><a href="#" class="soon">پیگیری سفارش</a></li><li><a href="#" class="soon">پروفایل</a></li><li><a href="#" class="soon">خروج از سیستم</a></li></ul></li>
         <li><button onclick="toggleSub(this)">آموزش‌های رایگان <span class="caret">▼</span></button>
-            <ul class="m-sub"><li><a href="articles.html" style="color:var(--gold);font-weight:800">مقالات</a></li><li><a href="videos.html">ویدیوهای آموزشی</a></li></ul></li>
+            <ul class="m-sub"><li><a href="/articles" style="color:var(--gold);font-weight:800">مقالات</a></li><li><a href="/videos">ویدیوهای آموزشی</a></li></ul></li>
         <li><button onclick="toggleSub(this)">فروشگاه <span class="caret">▼</span></button>
-            <ul class="m-sub"><li><a href="products.html">محصولات آموزشی</a></li><li><a href="online.html">آنلاین‌سازی کسب‌وکار</a></li><li><a href="subs.html">اشتراک‌ها</a></li><li><a href="crm.html">CRM</a></li></ul></li>
-        <li><a href="support.html">پشتیبانی</a></li>
-        <li><a href="about.html">جیبیکو چیست؟</a></li>
+            <ul class="m-sub"><li><a href="/products">محصولات آموزشی</a></li><li><a href="/online">آنلاین‌سازی کسب‌وکار</a></li><li><a href="/subs">اشتراک‌ها</a></li><li><a href="/crm">CRM</a></li></ul></li>
+        <li><a href="/support">پشتیبانی</a></li>
+        <li><a href="/about">جیبیکو چیست؟</a></li>
         <li><a href="https://ble.ir/jibicoclub" target="_blank" style="color:var(--gold)">کانال بله</a></li>
     </ul>
 </div>
@@ -252,184 +198,5 @@ footer{background:var(--navy);color:#cfd8e3;border-top:1px solid var(--line)}
     <div id="articleView"></div>
 </div>
 
-<footer>
-    <div class="wrap footer-top">
-        <div class="f-col">
-            <a href="index.html" class="logo-box"><span class="logo">جیبیکو</span><span class="logo-tag">از استعداد تا درآمد</span></a>
-            <p class="f-desc">جیبیکو با تحلیل شخصیت، استعداد و شرایط تو، نقشه راه اختصاصی رشد درآمد می‌سازه — نه یه نسخه عمومی برای همه.</p>
-            <div class="f-social">
-                <a href="https://ble.ir/jibicoclub" target="_blank" title="بله"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></a>
-                <a href="https://www.instagram.com/invites/contact/?utm_source=ig_contact_invite&utm_medium=copy_link&utm_content=b878nx4" target="_blank" title="اینستاگرام"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
-            </div>
-        </div>
-        <div class="f-col"><h4>دسترسی سریع</h4><ul class="f-links">
-            <li><a href="index.html">صفحه اصلی</a></li><li><a href="azmoon.html">آزمون رایگان</a></li><li><a href="about.html">جیبیکو چیست؟</a></li><li><a href="support.html">پشتیبانی</a></li>
-        </ul></div>
-        <div class="f-col"><h4>آموزش و فروشگاه</h4><ul class="f-links">
-            <li><a href="articles.html">مقالات</a></li><li><a href="videos.html">ویدیوهای آموزشی</a></li><li><a href="products.html">محصولات آموزشی</a></li><li><a href="subs.html">اشتراک‌ها</a></li><li><a href="crm.html">CRM فروش</a></li>
-        </ul></div>
-        <div class="f-col"><h4>تماس با ما</h4><ul class="f-contact">
-            <li><span class="c-ico">📞</span><a href="tel:+989120281178">۰۹۱۲۰۲۸۱۱۷۸</a></li>
-            <li><span class="c-ico">🕐</span><span>پشتیبانی در ساعات کاری</span></li>
-            <li><span class="c-ico">📣</span><a href="https://ble.ir/jibicoclub" target="_blank">کانال بله جیبیکو</a></li>
-        </ul></div>
-    </div>
-    <div class="wrap footer-bottom">
-        <div class="fb-copy">© <span id="cpyYear">۱۴۰۵</span> <b>جیبیکو</b> — کلیه حقوق محفوظ است. از استعداد تا درآمد 💛</div>
-        <div class="fb-badges"><div class="badge-box">نماد اعتماد</div><div class="badge-box">ساماندهی</div></div>
-    </div>
-</footer>
+`;
 
-<a class="float-ble" href="https://ble.ir/jibicoclub" target="_blank" title="کانال بله"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></a>
-<button class="to-top" id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-
-<script src="articles-data-1.js"></script>
-<script src="articles-data-2.js"></script>
-<script src="articles-data-3.js"></script>
-<script src="articles-data-4.js"></script>
-<script>
-(function(){
-"use strict";
-var PHONE='09120281178';
-try{ document.getElementById('cpyYear').textContent = new Intl.DateTimeFormat('fa-IR',{year:'numeric'}).format(new Date()); }catch(e){}
-if(window.ARTICLES)document.getElementById('artCount').textContent=window.ARTICLES.length.toLocaleString('fa-IR');
-
-var currentCat='all';
-window.renderList=function(){
-    var q=(document.getElementById('aSearch').value||'').trim();
-    var html='';
-    (window.ARTICLES||[]).forEach(function(a){
-        if(currentCat!=='all'&&a.cat!==currentCat)return;
-        if(q&&(a.title+a.excerpt).indexOf(q)===-1)return;
-        html+='<div class="a-card" onclick="openArticle('+a.id+')">'+
-            '<div class="a-cover" style="background:'+a.grad+'">'+a.emoji+'</div>'+
-            '<div class="a-body"><h4>'+a.title+'</h4><p>'+a.excerpt+'</p>'+
-            '<div class="a-meta"><span>⏱️ '+a.time+'</span><span>'+a.catName+'</span><span>📖 کتابچه کامل</span></div></div></div>';
-    });
-    if(!html)html='<p style="text-align:center;color:var(--muted);grid-column:1/-1">مقاله‌ای با این مشخصات پیدا نشد. 🤔</p>';
-    document.getElementById('artList').innerHTML=html;
-};
-window.setCat=function(cat,btn){
-    currentCat=cat;
-    var btns=document.querySelectorAll('#filters button');
-    btns.forEach(function(b){b.classList.remove('active');});
-    btn.classList.add('active');
-    window.renderList();
-};
-window.openArticle=function(id){
-    var a=null;(window.ARTICLES||[]).forEach(function(x){if(x.id===id)a=x;});
-    if(!a)return;
-    document.getElementById('artList').style.display='none';
-    document.querySelector('.tools').style.display='none';
-    document.querySelector('.hero').style.display='none';
-    var view=document.getElementById('articleView');
-    view.style.display='block';
-    var next=(window.ARTICLES||[])[id%window.ARTICLES.length];
-    var tocItems=a.toc.split('|');
-    var tocHtml='<div class="toc"><h5>📑 فهرست این کتابچه</h5><ul>';
-    tocItems.forEach(function(t,i){tocHtml+='<li><b>'+(i+1)+'.</b> '+t+'</li>';});
-    tocHtml+='</ul></div>';
-    view.innerHTML=
-        '<button class="back-btn" onclick="backToList()">→ برگشت به مقالات</button>'+
-        '<div class="art-cover" style="background:'+a.grad+'">'+a.emoji+'</div>'+
-        '<div class="art-head"><div class="a-meta"><span>'+a.catName+'</span><span>⏱️ '+a.time+'</span><span>✍️ جمال صمدی</span></div><h2>'+a.title+'</h2></div>'+
-        tocHtml+
-        '<div class="art-body">'+a.body+'<div class="keybox">💡 '+a.key+'</div></div>'+
-        '<div class="feedback"><button onclick="giveFeedback(true)">👍 مفید بود</button><button onclick="giveFeedback(false)">👎 نه چندان</button></div>'+
-        '<div class="pdf-box"><h4>📥 دانلود رایگان نسخه PDF این کتابچه</h4><p>نام و شماره تماست رو وارد کن تا لینک دانلود باز بشه.</p>'+
-        '<form class="pdf-form" id="pdfForm" onsubmit="unlockPdf(event,\''+a.pdf+'\')">'+
-        '<input type="text" id="pName" placeholder="نام و نام خانوادگی" required>'+
-        '<input type="tel" id="pMobile" placeholder="شماره موبایل" required>'+
-        '<button type="submit" class="btn-gold">دریافت لینک دانلود</button></form>'+
-        '<div class="dl-wrap" id="dlWrap"><a class="dl-link" href="'+a.pdf+'" download>⬇️ دانلود PDF</a></div></div>'+
-        '<div class="next-read"><div class="nr-txt">بعدی بخوان:<b>'+next.title+'</b></div>'+
-        '<button class="btn-gold" onclick="openArticle('+next.id+')">خواندن ←</button></div>';
-    try{history.replaceState(null,'','#'+a.hash);}catch(e){}
-    window.scrollTo({top:0,behavior:'smooth'});
-};
-window.backToList=function(){
-    document.getElementById('articleView').style.display='none';
-    document.getElementById('artList').style.display='grid';
-    document.querySelector('.tools').style.display='flex';
-    document.querySelector('.hero').style.display='block';
-    try{history.replaceState(null,'',location.pathname);}catch(e){}
-};
-window.unlockPdf=function(ev,pdf){
-    ev.preventDefault();
-    var name=document.getElementById('pName').value.trim();
-    var mobile=document.getElementById('pMobile').value.trim();
-    if(!name){toast('لطفاً نامت رو بنویس.');return;}
-    if(!/^09\d{9}$/.test(mobile)){toast('شماره موبایل معتبر وارد کن (مثل '+PHONE+').');return;}
-    document.getElementById('pdfForm').style.display='none';
-    document.getElementById('dlWrap').style.display='block';
-};
-window.giveFeedback=function(good){toast(good?'💛 خوشحالیم که مفید بود!':'🙏 ممنون؛ نسخه بهتری می‌نویسیم.');};
-
-(function(){
-    var h=location.hash.replace('#','');
-    if(!h)return;
-    (window.ARTICLES||[]).forEach(function(a){if(a.hash===h)window.openArticle(a.id);});
-})();
-
-var SEARCH_INDEX=[
- {t:'صفحه اصلی',u:'index.html',b:'صفحه',k:'خانه اصلی'},
- {t:'آزمون رایگان تشخیص',u:'azmoon.html',b:'صفحه',k:'ازمون mbti disc شخصیت'},
- {t:'جیبیکو چیست؟',u:'about.html',b:'صفحه',k:'درباره معرفی'},
- {t:'پشتیبانی',u:'support.html',b:'صفحه',k:'تماس کمک'},
- {t:'فروشگاه',u:'shop.html',b:'صفحه',k:'خرید'},
- {t:'محصولات آموزشی',u:'products.html',b:'صفحه',k:'دوره کتاب کارگاه'},
- {t:'آنلاین‌سازی کسب‌وکار',u:'online.html',b:'صفحه',k:'سایت طراحی'},
- {t:'اشتراک‌ها',u:'subs.html',b:'صفحه',k:'پلاس پرو پلاتینیوم'},
- {t:'CRM فروش',u:'crm.html',b:'صفحه',k:'مشتری فاکتور'},
- {t:'مقالات',u:'articles.html',b:'صفحه',k:'مقاله بلاگ'},
- {t:'ویدیوهای آموزشی',u:'videos.html',b:'صفحه',k:'ویدیو فیلم'}
-];
-function bindSearch(inputId,resultsId){
-    var inp=document.getElementById(inputId),res=document.getElementById(resultsId);
-    if(!inp||!res)return;
-    inp.addEventListener('input',function(){
-        var q=inp.value.trim();
-        if(!q){res.classList.remove('open');res.innerHTML='';return;}
-        var hits=SEARCH_INDEX.filter(function(it){return (it.t+' '+it.k).indexOf(q)>-1;}).slice(0,8);
-        if(!hits.length){res.innerHTML='<div class="sr-empty">نتیجه‌ای پیدا نشد 🤔</div>';res.classList.add('open');return;}
-        var html='';
-        hits.forEach(function(it){html+='<div class="sr-item" data-u="'+it.u+'"><span class="tt">'+it.t+'</span><span class="bd">'+it.b+'</span></div>';});
-        res.innerHTML=html;res.classList.add('open');
-    });
-    res.addEventListener('click',function(e){var item=e.target.closest('.sr-item');if(item)window.location.href=item.getAttribute('data-u');});
-    inp.addEventListener('keydown',function(e){
-        if(e.key==='Enter'){var first=res.querySelector('.sr-item');if(first)window.location.href=first.getAttribute('data-u');}
-        if(e.key==='Escape'){res.classList.remove('open');}
-    });
-    document.addEventListener('click',function(e){if(!e.target.closest('#'+inputId)&&!e.target.closest('#'+resultsId))res.classList.remove('open');});
-}
-bindSearch('dSearchInput','dSearchResults');
-bindSearch('searchInput','searchResults');
-bindSearch('mSearchInput','mSearchResults');
-
-window.openAnForm=function(){
-    document.getElementById('announceForm').classList.toggle('open');
-    if(document.getElementById('announceForm').classList.contains('open'))document.getElementById('anName').focus();
-};
-window.submitAnForm=function(){
-    var name=document.getElementById('anName').value.trim();
-    var mobile=document.getElementById('anMobile').value.trim();
-    if(!name){toast('لطفاً نامت رو بنویس.');return;}
-    if(!/^09\d{9}$/.test(mobile)){toast('شماره موبایل معتبر وارد کن (مثل '+PHONE+').');return;}
-    window.location.href='azmoon.html';
-};
-window.closeAnnounce=function(){
-    document.getElementById('announceBar').style.display='none';
-    document.getElementById('announceForm').classList.remove('open');
-};
-function toast(msg){var t=document.createElement('div');t.textContent=msg;t.style.cssText='position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#0e2440;color:#f2b632;padding:12px 26px;border-radius:50px;border:1px solid rgba(242,182,50,.5);z-index:2000;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.4);transition:opacity .4s;font-family:inherit';document.body.appendChild(t);setTimeout(function(){t.style.opacity='0';},2200);setTimeout(function(){t.remove();},2700);}
-document.addEventListener('click',function(e){var el=e.target.closest?e.target.closest('a.soon'):null;if(el){e.preventDefault();toast('🚧 این بخش در فازهای بعدی ساخته می‌شه.');}});
-window.togglePanel=function(){document.getElementById('mPanel').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');document.getElementById('burger').classList.toggle('active');};
-window.toggleSub=function(btn){var sub=btn.nextElementSibling;if(sub)sub.classList.toggle('open');};
-window.toggleSearch=function(){document.getElementById('searchRow').classList.toggle('open');if(document.getElementById('searchRow').classList.contains('open'))document.getElementById('searchInput').focus();};
-window.addEventListener('scroll',function(){var y=window.pageYOffset||0;var h=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('prog').style.width=(h>0?(y/h)*100:0)+'%';document.getElementById('header').classList.toggle('scrolled',y>60);document.getElementById('toTop').classList.toggle('show',y>500);},{passive:true});
-window.renderList();
-})();
-</script>
-<script src="/link-fix.js"></script></body>
-</html>

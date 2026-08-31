@@ -24,6 +24,7 @@ export default function Dashboard(){
   useEffect(()=>{
     const t = searchParams?.get('tab')
     if(t && TABS.some(x=>x.id===t)) setTab(t)
+    else if(!t) setTab('overview')
   },[searchParams])
 
   const [profile, setProfile] = useState(null)
