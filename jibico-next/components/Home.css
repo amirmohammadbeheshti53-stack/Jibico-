@@ -83,3 +83,19 @@
   .path-row{gap:20px}
   .path-arrow{left:-22px}
 }
+/* مسیر رشد درآمدی موبایل: 2x2 بدون فلش */
+@media(max-width:768px){
+  .path-row{
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    gap:12px !important;
+    align-items:stretch !important;
+  }
+  .path-item{
+    justify-content:center !important;
+    padding:14px 10px !important;
+  }
+  .path-arrow{
+    display:none !important;
+  }
+}

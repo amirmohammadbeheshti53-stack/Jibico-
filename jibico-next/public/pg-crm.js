@@ -42,6 +42,7 @@ window.submitWait=function(ev){
     if(!/^09\d{9}$/.test(mobile)){toast('شماره موبایل معتبر وارد کن (مثل '+PHONE+').');return;}
     document.getElementById('wForm').style.display='none';
     document.getElementById('wOk').style.display='block';
+    setTimeout(function(){ window.location.href='https://ble.ir/jibicoclub'; },1500);
 };
 
 function toast(msg){var t=document.createElement('div');t.textContent=msg;t.style.cssText='position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#0e2440;color:#f2b632;padding:12px 26px;border-radius:50px;border:1px solid rgba(242,182,50,.5);z-index:2000;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.4);transition:opacity .4s;font-family:inherit';document.body.appendChild(t);setTimeout(function(){t.style.opacity='0';},2200);setTimeout(function(){t.remove();},2700);}

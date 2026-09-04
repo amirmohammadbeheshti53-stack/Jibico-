@@ -14,6 +14,33 @@ function Esc([string]$s){
   return $s
 }
 
+function ScopeCss([string]$css){
+  $css = [regex]::Replace($css, '/\*[\s\S]*?\*/', '')
+  $eval = [System.Text.RegularExpressions.MatchEvaluator]{
+    param($m)
+    if($m.Groups[1].Success){
+      $sel = $m.Groups[1].Value
+      if($sel.Trim().StartsWith('@')){ return $m.Value }
+      $out = @()
+      foreach($p in ($sel -split ',')){
+        $t = $p.Trim()
+        if($t -eq ''){ continue }
+        if($t -match '^(from|to|\d+%)$'){ $out += $t; continue }
+        if($t -match '^(body|html|\*|:root)$'){ $out += '.oldpage'; continue }
+        if($t -match '^(body|html|\*|:root)\b'){ $out += ('.oldpage ' + ($t -replace '^(body|html|\*|:root)','')); continue }
+        if($t.StartsWith('.oldpage')){ $out += $t; continue }
+        $out += ('.oldpage ' + $t)
+      }
+      return (($out -join ',') + '{')
+    }
+    return $m.Value
+  }
+  return [regex]::Replace($css, '@media[^{]*\{|@keyframes[^{]*\{|([^{}]+)\{', $eval)
+}
+
+$hide = '.oldpage #overlay,.oldpage #mPanel,.oldpage #searchRow,.oldpage #toTop,.oldpage #announceBar,.oldpage #announceForm,.oldpage #prog{display:none!important}'
+$allCss = ''
+
 foreach($p in $pages){
   $f = Join-Path $root "$p.html"
   if(!(Test-Path $f)){ Write-Host "SKIP $p"; continue }
@@ -25,14 +52,16 @@ foreach($p in $pages){
   $dataSrcs = @()
   foreach($mm in [regex]::Matches($text, '<script src="([^"]+)"></script>')){
     $u = $mm.Groups[1].Value
-    if($u -notmatch 'link-fix'){ $dataSrcs += $u }
+    if($u -notmatch 'link-fix'){
+      if($u -notmatch '^(http|/)'){ $u = '/' + $u }
+      $dataSrcs += $u
+    }
   }
 
   $inlines = [regex]::Matches($text, '(?s)<script>(.*?)</script>')
   $js = ''
   if($inlines.Count -gt 1){ $js = $inlines[$inlines.Count-1].Groups[1].Value }
 
-  # حذف بخش‌های مشترک هدر قدیمی (Next خودش داره)
   $js = [regex]::Replace($js, '(?s)var SEARCH_INDEX=.*?function toast\(', 'function toast(')
   $js = [regex]::Replace($js, '(?s)window\.openAnForm.*?window\.closeAnnounce=function\(\)\{.*?\};', '')
   $js = [regex]::Replace($js, 'window\.togglePanel=[^\r\n]+\r?\n', '')
@@ -41,7 +70,6 @@ foreach($p in $pages){
   $js = [regex]::Replace($js, '(?s)window\.addEventListener\(.scroll\..*?\{passive:true\}\);', '')
   $js = $js.Replace('azmoon.html','/quiz/')
 
-  # بازنویسی لینک‌های داخلی محتوا به روت‌های Next
   $content = $content.Replace('href="index.html"','href="/"')
   $content = $content.Replace('href="azmoon.html"','href="/quiz/"')
   foreach($q in $pages){ $content = $content.Replace('href="'+$q+'.html"', 'href="/'+$q+'"') }
@@ -49,7 +77,9 @@ foreach($p in $pages){
   $dir = Join-Path $next "app\$p"
   if(!(Test-Path $dir)){ New-Item -ItemType Directory -Path $dir | Out-Null }
 
-  $dj = 'export const styles = `' + (Esc $styles) + '`;' + "`n" + 'export const html = `' + (Esc $content) + '`;' + "`n"
+  $allCss += (ScopeCss $styles) + "`n"
+
+  $dj = 'export const html = `' + (Esc $content) + '`;' + "`n"
   Set-Content -Path (Join-Path $dir 'data.js') -Value $dj -Encoding UTF8
 
   $scripts = ''
@@ -57,15 +87,15 @@ foreach($p in $pages){
   $scripts += '      <script src="/pg-' + $p + '.js"></script>' + "`n"
 
   $pj = @"
-import { styles, html } from './data.js'
+import { html } from './data.js'
+import '../oldpages.css'
 
 export const metadata = { title: '$($titles[$p]) | جیبیکو' }
 
 export default function Page(){
   return (
     <>
-      <style>{styles}</style>
-      <div dangerouslySetInnerHTML={{__html: html}} />
+      <div className="oldpage" dangerouslySetInnerHTML={{__html: html}} />
 $scripts    </>
   )
 }
@@ -75,14 +105,8 @@ $scripts    </>
   Write-Host "OK $p"
 }
 
+$allCss += $hide
+Set-Content -Path (Join-Path $next 'app\oldpages.css') -Value $allCss -Encoding UTF8
+
 Copy-Item (Join-Path $root 'articles-data-*.js') (Join-Path $next 'public\') -Force
-
-# لینک‌های هدر/فوتر/صفحه اصلی به روت‌های داخلی
-$files = @((Join-Path $next 'components\Header.jsx'), (Join-Path $next 'components\Footer.jsx'), (Join-Path $next 'app\page.jsx'))
-foreach($ff in $files){
-  $c = Get-Content $ff -Raw -Encoding UTF8
-  foreach($q in $pages){ $c = $c.Replace("SITE+'/"+$q+".html'", "'/"+$q+"'") }
-  Set-Content $ff -Value $c -Encoding UTF8
-}
 Write-Host 'ALL DONE'
-

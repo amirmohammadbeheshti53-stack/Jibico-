@@ -56,3 +56,6 @@
 .consult-form input{padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--navy2);color:#e2e8f0;font-family:inherit;font-size:14px}
 .consult-form input:focus{outline:none;border-color:var(--gold)}
 .consult-ok{margin-top:12px;text-align:center;padding:15px;color:#4ade80;font-weight:700;background:rgba(74,222,128,.08);border-radius:10px}
+.ai-block{border:1px solid rgba(242,182,50,.45);background:rgba(242,182,50,.07);border-radius:16px}
+.ai-loading{color:var(--gold);font-size:14px;padding:10px 0}
+.ai-text{white-space:pre-wrap;line-height:2;font-size:14px;color:#e2e8f0}

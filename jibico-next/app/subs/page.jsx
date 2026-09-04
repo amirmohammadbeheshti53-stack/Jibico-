@@ -1,12 +1,12 @@
-﻿import { styles, html } from './data.js'
+﻿import { html } from './data.js'
+import '../oldpages.css'
 
 export const metadata = { title: 'اشتراک‌ها | جیبیکو' }
 
 export default function Page(){
   return (
     <>
-      <style>{styles}</style>
-      <div dangerouslySetInnerHTML={{__html: html}} />
+      <div className="oldpage" dangerouslySetInnerHTML={{__html: html}} />
       <script src="/pg-subs.js"></script>
     </>
   )

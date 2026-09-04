@@ -14,6 +14,8 @@ export default function Quiz() {
   const [finished, setFinished] = useState(false)
   const [consultOpen, setConsultOpen] = useState(false)
   const [consultOk, setConsultOk] = useState(false)
+  const [aiText, setAiText] = useState('')
+  const [aiLoading, setAiLoading] = useState(false)
 
   const visible = QUESTIONS.filter(q => !q.showIf || answers[q.showIf.field] === q.showIf.equals)
   const q = visible[index]
@@ -34,6 +36,7 @@ export default function Quiz() {
   function restart(){
     setStarted(false); setIndex(0); setAnswers({}); setFinished(false)
     setConsultOpen(false); setConsultOk(false)
+    setAiText(''); setAiLoading(false)
   }
 
   function submitConsult(){
@@ -63,6 +66,25 @@ export default function Quiz() {
         bottleneck: p.primary,
         full: p
       })
+
+      setAiLoading(true)
+      const payload = {
+        archetype: ARCHETYPES[p.archetype].t,
+        skill: p.skill, monet: p.monet, gap: p.gap,
+        mbti: p.mbti.type, temperament: p.mbti.temperament,
+        disc: p.disc.style,
+        bottleneck: BOTTLENECK_NAMES[p.primary],
+        bottleneck2: BOTTLENECK_NAMES[p.secondary],
+        textAnswers: visible.filter(qq=>qq.type==='text').map(qq=>({question: qq.text, answer: answers[qq.id]}))
+      }
+      fetch('https://jibicoclub.ir/api/ai-bridge.php', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({task:'report', payload})
+      }).then(r=>r.json()).then(d=>{
+        setAiLoading(false)
+        if(d && d.ok){ setAiText(d.text) }
+      }).catch(()=>setAiLoading(false))
     }
   },[finished])
 
@@ -70,11 +92,11 @@ export default function Quiz() {
     return (
       <section className="quiz">
         <div className="quiz-card intro">
-          <div className="quiz-big">🧭</div>
+          <div className="quiz-big">🧠</div>
           <h1>آزمون رایگان <b>تشخیص و تحلیل شخصیت</b></h1>
           <p>وضعیت فعلی، گلوگاه اصلی درآمد، تایپ شخصیتی MBTI و سبک رفتار DISC تو مشخص می‌شه و گزارش اختصاصی‌ات رو همین‌جا می‌گیری.</p>
           <div className="quiz-chips">
-            <span className="qchip">⏱️ حدود ۱۵ دقیقه</span>
+            <span className="qchip">⏱️ حدود ۵ دقیقه</span>
             <span className="qchip">🧠 MBTI + DISC</span>
             <span className="qchip">🎯 گزارش آنی</span>
           </div>
@@ -123,13 +145,19 @@ export default function Quiz() {
             {p.close && <div className="step">ℹ️ دو گلوگاه به هم نزدیکن؛ در مشاوره دقیق‌تر بررسی می‌کنیم.</div>}
           </div>
 
+          <div className="rep-block ai-block">
+            <h4>🤖 تحلیل اختصاصی هوش مصنوعی از تو</h4>
+            {aiLoading && <div className="ai-loading">✨ در حال نوشتن تحلیل شخصی تو... چند ثانیه صبر کن</div>}
+            {aiText && <div className="ai-text">{aiText}</div>}
+          </div>
+
           <div className="rep-block">
             <h4>🎯 سه قدم اول تو</h4>
             {PLAYBOOKS[p.primary].map((s,i)=>(<div className="step" key={i}>{i+1}. {s}</div>))}
           </div>
 
           <div className="rep-block">
-            <h4>➕ قدم بعدی</h4>
+            <h4>👣 قدم بعدی</h4>
             <div className="next-box">
               <button className="next-gold" onClick={()=>setConsultOpen(!consultOpen)}>📞 تنظیم مشاوره تلفنی برای بررسی دقیق‌تر</button>
               <Link className="next-line" href="/">برگشت به صفحه اصلی</Link>

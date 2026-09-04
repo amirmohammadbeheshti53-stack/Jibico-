@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import './Footer.css'
 
-const SITE = 'https://jibicoclub.ir'
-
 export default function Footer(){
   const [showTop, setShowTop] = useState(false)
   useEffect(()=>{
@@ -29,20 +27,18 @@ export default function Footer(){
           </div>
           <div className="f-col"><h4>دسترسی سریع</h4><ul className="f-links">
             <li><Link href="/">صفحه اصلی</Link></li>
-            <li><a href={'/about'}>جیبیکو چیست؟</a></li>
-            <li><a href={'/support'}>پشتیبانی</a></li>
-            <li><a href="/#free">مشاوره رایگان</a></li>
+            <li><a href="/about">جیبیکو چیست؟</a></li>
+            <li><a href="/support">پشتیبانی</a></li>
           </ul></div>
           <div className="f-col"><h4>آموزش و فروشگاه</h4><ul className="f-links">
-            <li><a href={'/articles'}>مقالات</a></li>
-            <li><a href={'/videos'}>ویدیوهای آموزشی</a></li>
-            <li><a href={'/products'}>محصولات آموزشی</a></li>
-            <li><a href={'/subs'}>اشتراک‌ها</a></li>
-            <li><a href={'/crm'}>CRM فروش</a></li>
+            <li><a href="/videos">ویدیوهای آموزشی</a></li>
+            <li><a href="/products">محصولات آموزشی</a></li>
+            <li><a href="/subs">اشتراک‌ها</a></li>
+            <li><a href="/crm">CRM فروش</a></li>
           </ul></div>
           <div className="f-col"><h4>تماس با ما</h4><ul className="f-contact">
             <li><span className="c-ico">📞</span><a href="tel:+989120281178">۰۹۱۲۰۲۸۱۱۷۸</a></li>
-            <li><span className="c-ico">🕐</span><span>پشتیبانی در ساعات کاری</span></li>
+            <li><span className="c-ico">🕐</span><span>پشتیبانی از ساعت ۸ صبح تا ۴ بعدازظهر</span></li>
             <li><span className="c-ico">📣</span><a href="https://ble.ir/jibicoclub" target="_blank" rel="noreferrer">کانال بله جیبیکو</a></li>
           </ul></div>
         </div>
@@ -59,4 +55,3 @@ export default function Footer(){
     </>
   )
 }
-
